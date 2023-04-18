@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/system';
 import { Typography } from '@mui/material';
+import BasicAlert from '@/components/Alerts/BasicAlert';
 
 const StyledTypography = styled(Typography)(
   ({ theme }) => `
@@ -11,7 +12,13 @@ const StyledTypography = styled(Typography)(
 `
 );
 const Index = () => {
-  return <StyledTypography>Hello Next</StyledTypography>;
+  const [open, setOpen] = useState(true);
+  return (
+    <>
+      <StyledTypography>Hello Next</StyledTypography>
+      <BasicAlert open={open} setOpen={setOpen} />
+    </>
+  );
 };
 
 export default Index;
