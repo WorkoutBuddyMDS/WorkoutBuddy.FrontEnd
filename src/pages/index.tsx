@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/system';
 import { Typography } from '@mui/material';
+import NavigationLayout from '@/components/Layouts/NavigationLayout';
 
 const StyledTypography = styled(Typography)(
   ({ theme }) => `
@@ -12,6 +13,10 @@ const StyledTypography = styled(Typography)(
 );
 const Index = () => {
   return <StyledTypography>Hello Next</StyledTypography>;
+};
+
+Index.getLayout = function getLayout(page: React.ReactElement) {
+  return <NavigationLayout>{page}</NavigationLayout>;
 };
 
 export default Index;
