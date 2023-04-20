@@ -8,6 +8,9 @@ import {
   Typography,
 } from '@mui/material';
 import { StyledBox } from '@/styles/login/styles';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { accountActions } from '@/store/reducers/account';
 
 interface Validator {
   [key: string]: {
@@ -49,11 +52,17 @@ const INPUT_VALIDATORS: Validator = {
   ],
 };
 
+const loginModelInitialState = {
+  email: '',
+  password: '',
+  areCredentialsInvalid: false,
+  isDisabled: false,
+};
+
 const Login = () => {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
+  const dispatcher = useDispatch();
+
+  const [loginModel, setLoginModel] = useState(loginModelInitialState);
 
   const [error, setError] = useState({
     email: '',
@@ -69,28 +78,37 @@ const Login = () => {
     }, 2000);
   }, []);
 
-  const handleFormSubmit = (e: FormEvent<HTMLDivElement>) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    for (const [key, value] of Object.entries(form)) {
+    for (const [key, value] of Object.entries(loginModel)) {
       for (const el of INPUT_VALIDATORS[key]) {
-        if (!el.validator(value)) {
+        if (typeof value === 'string' && !el.validator(value)) {
           setError((prevState) => ({
             ...prevState,
             [key]: el.error,
           }));
-          break;
+          return;
         }
       }
     }
+
+    const res = await axios({
+      method: 'post',
+      url: 'https://localhost:7132/UserAccount/login',
+      data: loginModel,
+    });
+    dispatcher(accountActions.login(res.data));
+
+    location.href = '/';
   };
 
   const updateForm = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setForm({
-      ...form,
+    setLoginModel({
+      ...loginModel,
       [id]: value,
     });
   };
@@ -104,7 +122,7 @@ const Login = () => {
         <Input
           id="email"
           aria-describedby="email"
-          value={form.email}
+          value={loginModel.email}
           onChange={updateForm}
         />
         {error.email && <FormHelperText>{error.email}</FormHelperText>}
@@ -115,7 +133,7 @@ const Login = () => {
         <Input
           id="password"
           aria-describedby="password"
-          value={form.password}
+          value={loginModel.password}
           onChange={updateForm}
         />
         {error.password && <FormHelperText>{error.password}</FormHelperText>}
