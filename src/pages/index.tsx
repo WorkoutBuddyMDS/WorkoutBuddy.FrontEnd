@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/system';
 import { Typography } from '@mui/material';
+import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import BasicAlert from '@/components/Alerts/BasicAlert';
 
 const StyledTypography = styled(Typography)(
@@ -19,6 +20,10 @@ const Index = () => {
       <BasicAlert open={open} setOpen={setOpen} />
     </>
   );
+};
+
+Index.getLayout = function getLayout(page: React.ReactElement) {
+  return <NavigationLayout>{page}</NavigationLayout>;
 };
 
 export default Index;
