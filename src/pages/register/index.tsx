@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Box,
@@ -14,15 +14,36 @@ import { LockOutlined } from '@mui/icons-material';
 import Link from 'next/link';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import Copyright from '@/components/Copyright/Copyright';
+import { useDispatch, useSelector } from 'react-redux';
+import { accountActions } from '../../store/reducers/account';
+import axios from 'axios';
+
+const registerModelInitialState = {
+  name: '',
+  username: '',
+  email: '',
+  passwordString: '',
+  birthDay: '',
+  weight: 0,
+};
 
 const Register = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+  const dispatcher = useDispatch();
+  const [registerModel, setRegisterModel] = useState(registerModelInitialState);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const submitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(registerModel);
+    const res = await axios({
+      method: 'post',
+      url: 'https://localhost:7132/UserAccount/register',
+      data: registerModel,
     });
+
+    dispatcher(accountActions.register(res.data));
+
+    location.href = '/';
   };
 
   return (
@@ -41,16 +62,20 @@ const Register = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={submitHandler}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="given-name"
-                name="firstName"
+                name="name"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="name"
+                label="Name"
                 autoFocus
               />
             </Grid>
@@ -58,10 +83,9 @@ const Register = () => {
               <TextField
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
+                id="username"
+                label="Username"
+                name="username"
               />
             </Grid>
             <Grid item xs={12}>
@@ -83,6 +107,26 @@ const Register = () => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="birth"
+                label="Date of birth"
+                type="date"
+                id="date"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="weight"
+                label="Weight"
+                type="number"
+                id="weight"
               />
             </Grid>
             <Grid item xs={12}>
