@@ -14,8 +14,8 @@ import { LockOutlined } from '@mui/icons-material';
 import Link from 'next/link';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import Copyright from '@/components/Copyright/Copyright';
-import { useDispatch, useSelector } from 'react-redux';
-import { accountActions } from '../../store/reducers/account';
+import { useDispatch } from 'react-redux';
+import { accountActions } from '@/store/reducers/account';
 import axios from 'axios';
 
 const registerModelInitialState = {
