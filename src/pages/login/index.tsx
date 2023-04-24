@@ -11,6 +11,9 @@ import { StyledBox } from '@/styles/login/styles';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { accountActions } from '@/store/reducers/account';
+import { NextPage } from 'next';
+import useText from '@/services/site-properties/parsing';
+import { Lang } from '@/services/site-properties/data';
 
 interface Validator {
   [key: string]: {
@@ -59,7 +62,11 @@ const loginModelInitialState = {
   isDisabled: false,
 };
 
-const Login = () => {
+interface Props {
+  lang: string;
+}
+
+const Login: NextPage<Props> = ({ lang }) => {
   const dispatcher = useDispatch();
 
   const [loginModel, setLoginModel] = useState(loginModelInitialState);
@@ -153,4 +160,10 @@ const Login = () => {
   );
 };
 
+Login.getInitialProps = async ({ req, locale }) => {
+  const lang = locale || req?.headers['x-language']?.toString();
+  return {
+    lang: lang || 'ro-RO',
+  };
+};
 export default Login;
