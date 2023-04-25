@@ -20,6 +20,7 @@ import {
 import { StyledLink } from '@/styles/styled-components';
 import { useRouter } from 'next/router';
 import BackButton from '@/components/Buttons/BackButton';
+import { NextPage } from 'next';
 
 interface Validator {
   [key: string]: {
@@ -75,7 +76,11 @@ const loginModelInitialState: LoginModel = {
   isDisabled: false,
 };
 
-const Login = () => {
+interface Props {
+  lang: string;
+}
+
+const Login: NextPage<Props> = ({ lang }) => {
   const dispatcher = useDispatch();
   const router = useRouter();
 
@@ -280,4 +285,10 @@ const Login = () => {
   );
 };
 
+Login.getInitialProps = async ({ req, locale }) => {
+  const lang = locale || req?.headers['x-language']?.toString();
+  return {
+    lang: lang || 'ro-RO',
+  };
+};
 export default Login;
