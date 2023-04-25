@@ -1,19 +1,26 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import {
+  Avatar,
+  Box,
   Button,
-  FormControl,
-  FormHelperText,
-  Input,
-  InputLabel,
+  Container,
+  Grid,
+  InputAdornment,
+  TextField,
   Typography,
 } from '@mui/material';
-import { StyledBox } from '@/styles/login/styles';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { accountActions } from '@/store/reducers/account';
+import {
+  AccountCircleOutlined,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material';
+import { StyledLink } from '@/styles/styled-components';
+import { useRouter } from 'next/router';
+import BackButton from '@/components/Buttons/BackButton';
 import { NextPage } from 'next';
-import useText from '@/services/site-properties/parsing';
-import { Lang } from '@/services/site-properties/data';
 
 interface Validator {
   [key: string]: {
@@ -55,7 +62,14 @@ const INPUT_VALIDATORS: Validator = {
   ],
 };
 
-const loginModelInitialState = {
+interface LoginModel extends Record<string, string | boolean> {
+  email: string;
+  password: string;
+  areCredentialsInvalid: boolean;
+  isDisabled: boolean;
+}
+
+const loginModelInitialState: LoginModel = {
   email: '',
   password: '',
   areCredentialsInvalid: false,
@@ -68,8 +82,12 @@ interface Props {
 
 const Login: NextPage<Props> = ({ lang }) => {
   const dispatcher = useDispatch();
+  const router = useRouter();
 
-  const [loginModel, setLoginModel] = useState(loginModelInitialState);
+  const [loginModel, setLoginModel] = useState<LoginModel>(
+    loginModelInitialState
+  );
+  const [showPassword, setShowPassword] = useState(false);
 
   const [error, setError] = useState({
     email: '',
@@ -88,16 +106,32 @@ const Login: NextPage<Props> = ({ lang }) => {
   const handleFormSubmit = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    for (const [key, value] of Object.entries(loginModel)) {
+    const loginData: LoginModel = { ...loginModel };
+
+    for (let key of Object.keys(loginData)) {
+      if (typeof loginData[key] !== 'string') {
+        delete loginData[key];
+      }
+    }
+
+    let isOk = true;
+    for (const [key, value] of Object.entries(
+      loginData as Record<string, string>
+    )) {
       for (const el of INPUT_VALIDATORS[key]) {
-        if (typeof value === 'string' && !el.validator(value)) {
+        if (!el.validator(value)) {
           setError((prevState) => ({
             ...prevState,
             [key]: el.error,
           }));
-          return;
+          isOk = false;
+          break;
         }
       }
+    }
+
+    if (!isOk) {
+      return;
     }
 
     const res = await axios({
@@ -107,13 +141,17 @@ const Login: NextPage<Props> = ({ lang }) => {
     });
     dispatcher(accountActions.login(res.data));
 
-    location.href = '/';
+    await router.push('/');
   };
 
   const updateForm = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
+    setError({
+      ...error,
+      [id]: '',
+    });
     setLoginModel({
       ...loginModel,
       [id]: value,
@@ -121,42 +159,129 @@ const Login: NextPage<Props> = ({ lang }) => {
   };
 
   return (
-    <StyledBox component="form" onSubmit={handleFormSubmit}>
-      <Typography variant="h5">Log in</Typography>
-
-      <FormControl>
-        <InputLabel htmlFor="email">Email Address</InputLabel>
-        <Input
-          id="email"
-          aria-describedby="email"
-          value={loginModel.email}
-          onChange={updateForm}
-        />
-        {error.email && <FormHelperText>{error.email}</FormHelperText>}
-      </FormControl>
-
-      <FormControl>
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <Input
-          id="password"
-          aria-describedby="password"
-          value={loginModel.password}
-          onChange={updateForm}
-        />
-        {error.password && <FormHelperText>{error.password}</FormHelperText>}
-      </FormControl>
-
-      <Button
-        type="submit"
-        style={{
-          margin: '50px auto 0 auto',
-          width: '200px',
-          border: '3px solid',
+    <>
+      <BackButton
+        sx={{
+          position: 'absolute',
+          top: '20px',
+          left: '20px',
+          padding: '10px 20px 10px 10px',
         }}
-      >
-        Submit
-      </Button>
-    </StyledBox>
+        onClick={router.back}
+      />
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar
+            sx={{
+              m: 1,
+              bgcolor: 'secondary.main',
+              height: '60px',
+              width: '60px',
+            }}
+          >
+            <AccountCircleOutlined height="40px" width="40px" />
+          </Avatar>
+          <Typography
+            component="h1"
+            variant="h3"
+            sx={{
+              marginBottom: '45px',
+              width: '200%',
+              textAlign: 'center',
+              marginTop: '10px',
+            }}
+          >
+            Sign in into your account
+          </Typography>
+          <Box component="form" onSubmit={handleFormSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  value={loginModel.email}
+                  onChange={updateForm}
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              {error.email && (
+                <Grid xs={12} sx={{ padding: '10px 0 10px 16px !important' }}>
+                  <Typography sx={{ color: 'red' }} variant="caption">
+                    {error.email}
+                  </Typography>
+                </Grid>
+              )}
+              <Grid item xs={12}>
+                <TextField
+                  value={loginModel.password}
+                  onChange={updateForm}
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  autoComplete="new-password"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position={'start'}>
+                        {showPassword ? (
+                          <VisibilityOff
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() =>
+                              setShowPassword((prevState) => !prevState)
+                            }
+                          />
+                        ) : (
+                          <Visibility
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() =>
+                              setShowPassword((prevState) => !prevState)
+                            }
+                          />
+                        )}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              {error.password && (
+                <Grid xs={12} sx={{ padding: '10px 0 10px 16px !important' }}>
+                  <Typography sx={{ color: 'red' }} variant="caption">
+                    {error.password}
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container justifyContent="center" sx={{ marginTop: '5px' }}>
+              <Grid item>
+                <StyledLink href="/register">
+                  Don't have an account? Let's get started
+                </StyledLink>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
+    </>
   );
 };
 
