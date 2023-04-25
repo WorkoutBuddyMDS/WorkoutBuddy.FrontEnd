@@ -15,6 +15,8 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { StyledBasicButton } from '@/styles/styled-components';
 import { styled } from '@mui/system';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -26,6 +28,11 @@ const StyledButtonBox = styled(Box)`
 function NavigationLayout({ children }: { children: React.ReactElement }) {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const accountState = useSelector((state) => state.account);
+
+  const [username, setUsername] = useState(accountState.username);
+  const [isAdmin, setisAdmin] = useState(false);
+  const [jwtToken, setJwtToken] = useState('');
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -33,6 +40,18 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      setJwtToken(token);
+      setIsLoggedIn(true);
+      setUsername(sessionStorage.getItem('username') ?? 'User');
+      setisAdmin(sessionStorage.getItem('roles')!.includes('Admin'));
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [accountState]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -48,6 +67,8 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  console.log(username);
 
   return (
     <>
@@ -144,10 +165,10 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
-                    />
+                    <Avatar>
+                      {username.replace(/[a-z]/g, '') ||
+                        username.toUpperCase()[0]}
+                    </Avatar>
                   </IconButton>
                 </Tooltip>
                 <Menu
