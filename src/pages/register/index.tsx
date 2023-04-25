@@ -22,13 +22,14 @@ import axios from 'axios';
 import { StyledLink } from '@/styles/styled-components';
 import BackButton from '@/components/Buttons/BackButton';
 import { useRouter } from 'next/router';
+import dayjs from 'dayjs';
 
 const registerModelInitialState = {
   name: '',
   username: '',
   email: '',
   passwordString: '',
-  birthDay: new Date(),
+  birthDay: dayjs(Date.now()),
   weight: 0,
 };
 
@@ -219,7 +220,7 @@ const Register = () => {
             </Button>
             <Grid container justifyContent="center" sx={{ marginTop: '5px' }}>
               <Grid item>
-                <StyledLink href="/login" hoverable={true}>
+                <StyledLink href="/login">
                   Already have an account? Sign in
                 </StyledLink>
               </Grid>
