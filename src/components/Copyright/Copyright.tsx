@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import Link from 'next/link';
+import { StyledLink } from '@/styles/styled-components';
 
 const Copyright = (props: any) => {
   return (
@@ -10,7 +10,9 @@ const Copyright = (props: any) => {
       {...props}
     >
       {'Copyright © '}
-      <Link href="https://mui.com/">Your Website</Link>{' '}
+      <StyledLink href="http:www.workoutbuddy.ro:3000">
+        Workout Buddy
+      </StyledLink>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
