@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -23,6 +24,7 @@ import { StyledLink } from '@/styles/styled-components';
 import BackButton from '@/components/Buttons/BackButton';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
+import BasicAlert from '@/components/Alerts/BasicAlert';
 
 const registerModelInitialState = {
   name: '',
@@ -38,24 +40,29 @@ const Register = () => {
   const dispatcher = useDispatch();
   const [registerModel, setRegisterModel] = useState(registerModelInitialState);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(null);
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await axios({
-      method: 'post',
-      url: 'https://localhost:7132/UserAccount/register',
-      data: registerModel,
-    });
+    try {
+      const res = await axios({
+        method: 'post',
+        url: 'https://localhost:7132/UserAccount/register',
+        data: registerModel,
+      });
+      dispatcher(accountActions.register(res.data));
 
-    dispatcher(accountActions.register(res.data));
-
-    await router.push('/');
+      await router.push('/');
+    } catch ({ response }) {
+      setError(response.data[0].errorMessage);
+    }
   };
 
   const updateForm = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
+    setError(null);
     setRegisterModel({
       ...registerModel,
       [id]: value,
@@ -229,6 +236,12 @@ const Register = () => {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
+      <BasicAlert
+        open={!!error}
+        alert={{ severity: 'error' }}
+        message={error}
+        setOpen={() => {}}
+      />
     </>
   );
 };
