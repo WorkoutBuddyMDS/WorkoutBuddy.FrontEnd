@@ -41,7 +41,6 @@ const accountSlice = createSlice({
         roles: [],
       };
     },
-    getUser() {},
   },
 });
 
