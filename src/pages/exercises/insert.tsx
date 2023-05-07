@@ -14,7 +14,6 @@ import {
   TextareaAutosize,
   Typography,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 
 const exerciseInitialState = {

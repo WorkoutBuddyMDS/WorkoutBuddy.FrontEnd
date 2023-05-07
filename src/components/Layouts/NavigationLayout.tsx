@@ -18,9 +18,15 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FitnessCenter } from '@mui/icons-material';
+import Link from 'next/link';
 
 const pages = ['Exercises', 'Splits'];
-const settings = ['Profile', 'Account', 'Dashboard', <Button>Logout</Button>];
+const settings = [
+  <Link href="/user/edit">Profile</Link>,
+  'Account',
+  'Dashboard',
+  <Button>Logout</Button>,
+];
 
 const StyledButtonBox = styled(Box)`
   margin-left: 10px;
