@@ -14,12 +14,13 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { StyledBasicButton } from '@/styles/styled-components';
 import { styled } from '@mui/system';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { FitnessCenter } from '@mui/icons-material';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Exercises', 'Splits'];
+const settings = ['Profile', 'Account', 'Dashboard', <Button>Logout</Button>];
 
 const StyledButtonBox = styled(Box)`
   margin-left: 10px;
@@ -68,16 +69,16 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
     setAnchorElUser(null);
   };
 
-  console.log(username);
-
   return (
     <>
       <AppBar position="static" color="secondary">
         <Container maxWidth={false}>
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            <FitnessCenter
+              sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+            />
             <Typography
-              variant="h6"
+              variant="h5"
               noWrap
               component="a"
               href="/"
@@ -86,12 +87,12 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                 display: { xs: 'none', md: 'flex' },
                 fontFamily: 'monospace',
                 fontWeight: 700,
-                letterSpacing: '.3rem',
+                letterSpacing: '.15rem',
                 color: 'inherit',
                 textDecoration: 'none',
               }}
             >
-              LOGO
+              Workout Buddy
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -124,9 +125,12 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Button
+                    key={page}
+                    onClick={() => router.push(`/${page.toLowerCase()}`)}
+                  >
                     <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
+                  </Button>
                 ))}
               </Menu>
             </Box>
@@ -188,7 +192,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <MenuItem onClick={handleCloseUserMenu} key={setting}>
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
                   ))}

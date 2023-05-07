@@ -12,12 +12,15 @@ type Text = {
 
 export const text: Text = {
   'ro-RO': {
-    ['test']: {
+    test: {
       value: 'test',
+    },
+    'page.header': {
+      value: '',
     },
   },
   'en-US': {
-    ['test']: {
+    test: {
       value: 'test',
     },
   },
