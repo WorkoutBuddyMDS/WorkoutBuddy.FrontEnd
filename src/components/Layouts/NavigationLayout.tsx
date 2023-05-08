@@ -14,19 +14,14 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { StyledBasicButton } from '@/styles/styled-components';
 import { styled } from '@mui/system';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FitnessCenter } from '@mui/icons-material';
 import Link from 'next/link';
+import { accountActions } from '@/store/reducers/account';
 
 const pages = ['Exercises', 'Splits'];
-const settings = [
-  <Link href="/user/edit">Profile</Link>,
-  'Account',
-  'Dashboard',
-  <Button>Logout</Button>,
-];
 
 const StyledButtonBox = styled(Box)`
   margin-left: 10px;
@@ -47,6 +42,19 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  const settings = [
+    <Link href="/user/edit">Profile</Link>,
+    <Link href="/admin">Admin</Link>,
+    <Button
+      onClick={() => {
+        accountActions.signOut();
+        router.reload();
+      }}
+    >
+      Logout
+    </Button>,
+  ];
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
