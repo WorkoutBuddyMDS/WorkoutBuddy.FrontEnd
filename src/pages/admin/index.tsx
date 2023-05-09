@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   TextField,
@@ -6,6 +6,8 @@ import {
   Box,
   Typography,
   Divider,
+  Container,
+  Grid,
 } from '@mui/material';
 import AdminNavigationLayout from '@/components/Layouts/AdminNavigationLayout';
 
@@ -25,47 +27,77 @@ const AdminForm = () => {
     setConfirmPassword('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     // code to handle form submission
   };
 
   return (
-    <Box>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <TextField
-          label="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-        <TextField
-          label="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-        <TextField
-          label="Number of Exercises"
-          type="number"
-          value={numExercises}
-          onChange={(e) => setNumExercises(parseInt(e.target.value))}
-          disabled
-        />
-        <Button variant="outlined" onClick={() => setIsModalOpen(true)}>
-          Change Password
-        </Button>
-        <Button type="submit" variant="contained">
-          Save
-        </Button>
-      </form>
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 4 }}>
+        <Typography variant="h5" sx={{ marginBottom: 2 }}>
+          Your profile
+        </Typography>
+        <Box
+          sx={{
+            border: '1px solid #ccc',
+            borderRadius: '5px',
+            padding: '20px',
+          }}
+        >
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Number of Exercises"
+                  type="number"
+                  value={numExercises}
+                  onChange={(e) => setNumExercises(parseInt(e.target.value))}
+                  disabled
+                />
+              </Grid>
+            </Grid>
+            <Box sx={{ marginTop: 2, display: 'flex' }}>
+              <Button variant="outlined" onClick={() => setIsModalOpen(true)}>
+                Change Password
+              </Button>
+              <Box sx={{ flexGrow: 1 }} />
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
+            </Box>
+          </form>
+        </Box>
+      </Box>
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Box
           sx={{
@@ -82,23 +114,39 @@ const AdminForm = () => {
           <Typography variant="h5">Change Password</Typography>
           <Divider sx={{ my: 2 }} />
           <TextField
+            fullWidth
             label="New Password"
             type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             required
           />
-          <TextField
-            label="Confirm New Password"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <Button onClick={handlePasswordChange}>Save</Button>
+          <Box sx={{ marginTop: 2 }}>
+            <TextField
+              fullWidth
+              label="Confirm Password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </Box>
+          <Box sx={{ marginTop: 2, display: 'flex' }}>
+            <Button variant="outlined" onClick={() => setIsModalOpen(false)}>
+              Cancel
+            </Button>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button
+              variant="contained"
+              onClick={handlePasswordChange}
+              disabled={!newPassword || newPassword !== confirmPassword}
+            >
+              Change Password
+            </Button>
+          </Box>
         </Box>
       </Modal>
-    </Box>
+    </Container>
   );
 };
 

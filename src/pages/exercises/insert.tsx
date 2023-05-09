@@ -54,22 +54,26 @@ function InsertExercise() {
     getExercise();
   }, []);
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e: any) => {
     e.preventDefault();
 
     let formData = new FormData();
 
+    // @ts-ignore
     let querryString = `?selectedType.value=${exercise.selectedType.value}&selectedType.label=${exercise.selectedType.label}`;
 
     formData.append('exerciseId', exercise.exerciseId);
     formData.append('name', exercise.name);
     formData.append('description', exercise.description);
+    // @ts-ignore
     formData.append('selectedType', exercise.selectedType);
     let index = 0;
     debugger;
     for (let mg of exercise.selectedMuscleGroups) {
       formData.append('selectedMuscleGroups', mg);
+      // @ts-ignore
       querryString += `&selectedMuscleGroups[${index}].value=${mg.value}`;
+      // @ts-ignore
       querryString += `&selectedMuscleGroups[${index}].label=${mg.label}`;
       index++;
     }
@@ -144,6 +148,7 @@ function InsertExercise() {
           <Select
             value={exercise.selectedMuscleGroups}
             onChange={(e) => {
+              // @ts-ignore
               setExercise({ ...exercise, selectedMuscleGroups: e });
             }}
             multiple
@@ -161,6 +166,7 @@ function InsertExercise() {
           <FormLabel>Image</FormLabel>
           <Input
             onChange={(e) => {
+              // @ts-ignore
               setExercise({ ...exercise, image: e.target.files[0] });
             }}
             placeholder="description"

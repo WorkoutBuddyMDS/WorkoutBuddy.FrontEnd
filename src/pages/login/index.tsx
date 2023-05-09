@@ -21,7 +21,6 @@ import { StyledLink } from '@/styles/styled-components';
 import { useRouter } from 'next/router';
 import BackButton from '@/components/Buttons/BackButton';
 import { NextPage } from 'next';
-import useText from '@/services/site-properties/parsing';
 interface Validator {
   [key: string]: {
     validator: (el: string) => boolean;

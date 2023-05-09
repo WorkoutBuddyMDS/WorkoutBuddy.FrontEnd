@@ -6,9 +6,15 @@ import { useRouter } from 'next/router';
 import { Button, Box, Typography, Grid } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 
+export interface IExerciseItem {
+  exerciseId: string;
+  idImage: string;
+  name: string;
+  exerciseType: string;
+}
 const ExercisesList = () => {
   const router = useRouter();
-  const [exercises, setExercises] = useState([]);
+  const [exercises, setExercises] = useState<IExerciseItem[]>([]);
 
   useEffect(() => {
     const getExercises = async () => {
@@ -23,7 +29,7 @@ const ExercisesList = () => {
   }, []);
 
   const addHandler = () => {
-    router.push('/exercises/insert-exercise');
+    router.push('/exercises/insert');
   };
   const deleteHandler = (exerciseId: string) => {
     const newExercises = exercises.filter((ex) => ex.exerciseId != exerciseId);
@@ -61,7 +67,7 @@ const ExercisesList = () => {
             <Exercise
               key={ex.exerciseId}
               exercise={ex}
-              deleteHandler={deleteHandler}
+              deleteExercises={deleteHandler}
             ></Exercise>
           );
         })}

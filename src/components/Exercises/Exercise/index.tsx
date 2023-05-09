@@ -4,26 +4,29 @@ import AuthHeader from '@/utils/authrorizationHeader';
 import { useRouter } from 'next/navigation';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
+import { IExerciseItem } from '@/pages/exercises';
 
-export default function Exercise({ exercise, deleteHandler: deleteExercises }) {
+export default function Exercise({
+  exercise,
+  deleteExercises,
+}: {
+  exercise: IExerciseItem;
+  deleteExercises: (exerciseId: string) => void;
+}) {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
-    var roles = sessionStorage.getItem('roles');
+    let roles = sessionStorage.getItem('roles');
     if (roles) {
       setIsAdmin(roles.includes('Admin'));
     }
   }, []);
 
-  const viewHandler = (exerciseId) => {
-    router.push(`/exercises/${exerciseId}`);
+  const editHandler = (exerciseId: string) => {
+    router.push(`/exercises/insert?id=${exerciseId}`);
   };
 
-  const editHandler = (exerciseId) => {
-    router.push(`/exercises/insert-exercise?id=${exerciseId}`);
-  };
-
-  const deleteHandler = async (exerciseId) => {
+  const deleteHandler = async (exerciseId: string) => {
     let res = confirm('Are you sure you want to delete this exercise?');
     if (res) {
       try {
@@ -38,8 +41,6 @@ export default function Exercise({ exercise, deleteHandler: deleteExercises }) {
       } catch (err) {}
     }
   };
-
-  console.log(exercise);
 
   return (
     <Grid item xs={12} md={4} width="100%">
@@ -79,7 +80,7 @@ export default function Exercise({ exercise, deleteHandler: deleteExercises }) {
           <Stack mt={8} direction={'row'} spacing={4}>
             <Link
               style={{ flex: '1 1 0', fontSize: '10px' }}
-              href={`exercises/${exercise.exerciseId.toString()}`}
+              href={`/exercises/${exercise.exerciseId.toString()}`}
             >
               View
             </Link>
