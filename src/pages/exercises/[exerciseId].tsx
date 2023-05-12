@@ -3,8 +3,18 @@ import axios from 'axios';
 import AuthHeader from '@/utils/authrorizationHeader';
 import { useRouter } from 'next/router';
 import {
+  Avatar,
   Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  CircularProgress,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
   Grid,
   List,
@@ -12,115 +22,159 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import NavigationLayout from '@/components/Layouts/NavigationLayout';
+import { BasicLoader } from '@/components/Loader/BasicLoader';
+import BackButton from '@/components/Buttons/BackButton';
+import Link from 'next/link';
 
-export default function ViewExercise({ exerciseId }) {
-  const [exercise, setExercises] = useState({ muscleGroups: [] });
+interface IExercise {
+  name: string;
+  description: string;
+  idImage: string;
+  exerciseType: string;
+  muscleGroups: string[];
+}
+
+function ViewExercise() {
+  const [exercise, setExercise] = useState<IExercise>();
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+  const { exerciseId } = router.query;
+
+  const [open, setOpen] = useState(false);
+
+  const handleDelete = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.post('https://localhost:7132/Exercises/delete', {
+        body: JSON.stringify(exerciseId),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.status < 300) router.back();
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    const getExercise = async (exerciseId) => {
-      if (typeof window !== 'undefined') {
-        console.log('da');
+    const getExercise = async (exerciseId: string) => {
+      try {
         const { data } = await axios.get(
-          `https://localhost:7132/Exercises/view?id=${exerciseId}`,
+          `https://localhost:7132/Exercises/view?id=${exerciseId.toString()}`,
           {
             headers: {
               Authorization: AuthHeader(),
             },
           }
         );
-        setExercises(data);
+        setExercise(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    getExercise(exerciseId);
-  }, []);
-  return (
-    <Container maxWidth={'xl'}>
-      <Grid
-        sx={{
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '12px',
-          padding: '24px 0 ',
-        }}
-      >
-        <Grid item>
-          <img
-            alt={'product image'}
-            // src={`https://localhost:7132/Image/getImageById?id=${exerciseId}`}
-            style={{
-              backgroundRepeat: 'fit',
-              textAlign: 'center',
-              width: '100%',
-              height: '500px',
-            }}
-          />
-        </Grid>
-        <Stack spacing={{ base: 6, md: 10 }}>
-          <Box>
-            <Typography
-              lineHeight={1.1}
-              fontWeight={600}
-              fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
-            >
-              {exercise.name}
-            </Typography>
-            <Typography fontWeight={300} fontSize={'2xl'}>
-              {exercise.exerciseType}
-            </Typography>
-          </Box>
+    if (typeof exerciseId === 'string') {
+      getExercise(exerciseId);
+    }
+  }, [exerciseId]);
 
-          <Stack
-            spacing={{ base: 4, sm: 6 }}
-            direction={'column'}
-            divider={<Divider />}
-          >
-            <Stack direction="row" spacing={{ base: 4, sm: 6 }}>
-              <Typography fontSize={'2xl'} fontWeight={'300'}>
-                {exercise.description}
+  return (
+    <>
+      <BasicLoader open={loading} />
+      <BackButton />
+      <Container maxWidth="lg" sx={{ mt: 20 }}>
+        <Card
+          sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}
+        >
+          <CardContent sx={{ flex: 1 }}>
+            <Typography component="div" variant="h5" sx={{ mb: 1 }}>
+              {exercise?.name}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              sx={{ mb: 2 }}
+            >
+              {exercise?.exerciseType}
+            </Typography>
+            <Divider />
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                {exercise?.description}
               </Typography>
-            </Stack>
-            <Box>
-              <Typography
-                fontSize={{ base: '16px', lg: '18px' }}
-                fontWeight={'500'}
-                textTransform={'uppercase'}
-                mb={'4'}
-              >
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="subtitle1" sx={{ mb: 1 }}>
                 Muscles Targeted
               </Typography>
-              <Grid columns={{ base: 1, md: 2 }} spacing={10}>
-                <List>
-                  {exercise.muscleGroups.map((mg, index) => {
-                    return <ListItem key={index}>{mg}</ListItem>;
-                  })}
-                </List>
+              <Grid container spacing={2}>
+                {exercise?.muscleGroups.map((mg, index) => (
+                  <Grid item key={index}>
+                    <Avatar
+                      variant="rounded"
+                      sx={{ bgcolor: 'secondary.main' }}
+                    >
+                      {mg.charAt(0).toUpperCase()}
+                    </Avatar>
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                      {mg}
+                    </Typography>
+                  </Grid>
+                ))}
               </Grid>
             </Box>
-          </Stack>
-        </Stack>
-      </Grid>
-    </Container>
+          </CardContent>
+          {exerciseId && (
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'block' },
+                minWidth: 300,
+                maxWidth: '50%',
+              }}
+            >
+              <img
+                width="100%"
+                src={`https://localhost:7132/Image/getImageById?id=${exercise?.idImage}`}
+                alt={exercise?.name}
+              />
+            </Box>
+          )}
+        </Card>
+        <Link href={`/exercises/insert?id=${exerciseId}`}>
+          <Button variant="outlined">Edit</Button>
+        </Link>
+        <Button variant="contained" color="error" onClick={handleOpen}>
+          Delete
+        </Button>
+      </Container>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Delete Exercise</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this exercise?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleDelete} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 
-export async function getStaticPaths() {
-  const { data } = await axios.get('https://localhost:7132/Exercises/get');
-  console.log(data);
+ViewExercise.getLayout = function getLayout(page: React.ReactElement) {
+  return <NavigationLayout>{page}</NavigationLayout>;
+};
 
-  const paths = data.map((exercise) => ({
-    params: { id: exercise.exerciseId.toString() },
-  }));
-  return {
-    paths,
-    fallback: false, // can also be true or 'blocking'
-  };
-}
-
-export async function getStaticProps(context) {
-  return {
-    props: {
-      exerciseId: context.params.id,
-    },
-  };
-}
+export default ViewExercise;

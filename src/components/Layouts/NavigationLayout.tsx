@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { StyledBasicButton } from '@/styles/styled-components';
+import { StyledBasicButton, StyledLink } from '@/styles/styled-components';
 import { styled } from '@mui/system';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -20,8 +20,12 @@ import { useSelector } from 'react-redux';
 import { FitnessCenter } from '@mui/icons-material';
 import Link from 'next/link';
 import { accountActions } from '@/store/reducers/account';
+import { RootState } from '@/store';
 
-const pages = ['Exercises', 'Splits'];
+const pages = [
+  <StyledLink href="/exercises">Exercise</StyledLink>,
+  <StyledLink href="/splits">Splits</StyledLink>,
+];
 
 const StyledButtonBox = styled(Box)`
   margin-left: 10px;
@@ -30,7 +34,7 @@ const StyledButtonBox = styled(Box)`
 function NavigationLayout({ children }: { children: React.ReactElement }) {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const accountState = useSelector((state) => state.account);
+  const accountState = useSelector((state: RootState) => state.account);
 
   const [username, setUsername] = useState(accountState.username);
   const [isAdmin, setisAdmin] = useState(false);
@@ -85,7 +89,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
 
   return (
     <>
-      <AppBar position="static" color="secondary">
+      <AppBar position="static">
         <Container maxWidth={false}>
           <Toolbar disableGutters>
             <FitnessCenter
@@ -139,12 +143,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                 }}
               >
                 {pages.map((page) => (
-                  <Button
-                    key={page}
-                    onClick={() => router.push(`/${page.toLowerCase()}`)}
-                  >
-                    <Typography textAlign="center">{page}</Typography>
-                  </Button>
+                  <Typography textAlign="center">{page}</Typography>
                 ))}
               </Menu>
             </Box>
@@ -169,13 +168,9 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
+                <Typography sx={{ my: 2, color: 'white', display: 'block' }}>
                   {page}
-                </Button>
+                </Typography>
               ))}
             </Box>
 
@@ -206,7 +201,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem onClick={handleCloseUserMenu} key={setting}>
+                    <MenuItem onClick={handleCloseUserMenu}>
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
                   ))}

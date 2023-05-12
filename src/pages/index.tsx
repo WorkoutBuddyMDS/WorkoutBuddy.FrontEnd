@@ -50,16 +50,10 @@ const DetailSection = styled(Box)`
 
 const Index = () => {
   const router = useRouter();
-  const username = useRef<string>();
+  const username = useRef<string>('');
 
   useEffect(() => {
-    if (window.sessionStorage) {
-      if (Object.keys(AuthHeader()).length === 0) {
-        router.push('/login');
-      } else {
-        username.current = sessionStorage.getItem('username');
-      }
-    }
+    username.current = sessionStorage.getItem('username') || '';
   }, []);
 
   return (
@@ -85,7 +79,7 @@ const Index = () => {
           />
           <Typography variant="h6">Beginner</Typography>
           <p>
-            We cater to all experience leverls. Don't be shy and see what you're
+            We cater to all experience levels. Don't be shy and see what you're
             missing
           </p>
         </DetailSection>

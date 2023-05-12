@@ -5,7 +5,7 @@ function AuthHeader() {
     const transfToken = token.substring(0, token.length);
     return `Bearer ${token}`;
   } else {
-    return {};
+    return '';
   }
 }
 export default AuthHeader;

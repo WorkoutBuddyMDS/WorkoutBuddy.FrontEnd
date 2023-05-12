@@ -53,8 +53,8 @@ const Register = () => {
       dispatcher(accountActions.register(res.data));
 
       await router.push('/');
-    } catch ({ response }) {
-      setError(response.data[0].errorMessage);
+    } catch (error: any) {
+      setError(error.data[0].errorMessage);
     }
   };
 
