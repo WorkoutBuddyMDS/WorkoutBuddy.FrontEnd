@@ -74,7 +74,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   };
 
   const settings = [
-    <Link href={`/user/edit?token=${jwtToken}`}>Profile</Link>,
+    <Link href={`/user/edit`}>Profile</Link>,
     <Button
       onClick={() => {
         dispatcher(accountActions.signOut());
@@ -86,9 +86,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   ];
 
   if (isAdmin) {
-    settings.unshift(
-      <Link href={`/admin/pending-exercises?token=${jwtToken}`}>Admin</Link>
-    );
+    settings.unshift(<Link href={`/admin/pending-exercises`}>Admin</Link>);
   }
 
   return (
