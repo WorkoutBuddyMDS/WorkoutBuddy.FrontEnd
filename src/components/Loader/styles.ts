@@ -3,12 +3,17 @@ import { Backdrop, CircularProgress } from '@mui/material';
 
 export const StyledBackdrop = styled(Backdrop)`
   && {
+    z-index: 2;
   }
 `;
 
-export const StyledCircularProgress = styled(CircularProgress)`
+export const StyledCircularProgress = styled<{ width: string; height: string }>(
+  CircularProgress
+)`
   && {
-    width: 100px !important;
-    height: 100px !important;
+    position: absolute;
+    width: ${(props) => props.width} !important;
+    height: ${(props) => props.height} !important;
+    color: black;
   }
 `;

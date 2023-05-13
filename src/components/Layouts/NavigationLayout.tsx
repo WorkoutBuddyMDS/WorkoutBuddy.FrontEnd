@@ -16,14 +16,14 @@ import { StyledBasicButton, StyledLink } from '@/styles/styled-components';
 import { styled } from '@mui/system';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FitnessCenter } from '@mui/icons-material';
 import Link from 'next/link';
 import { accountActions } from '@/store/reducers/account';
 import { RootState } from '@/store';
 
 const pages = [
-  <StyledLink href="/exercises">Exercise</StyledLink>,
+  <StyledLink href="/exercises">Exercises</StyledLink>,
   <StyledLink href="/splits">Splits</StyledLink>,
 ];
 
@@ -33,13 +33,12 @@ const StyledButtonBox = styled(Box)`
 
 function NavigationLayout({ children }: { children: React.ReactElement }) {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const dispatcher = useDispatch();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const accountState = useSelector((state: RootState) => state.account);
-
   const [username, setUsername] = useState(accountState.username);
-  const [isAdmin, setisAdmin] = useState(false);
-  const [jwtToken, setJwtToken] = useState('');
-
+  const [isAdmin, setisAdmin] = useState<boolean | undefined>(false);
+  const [jwtToken, setJwtToken] = useState<string | null>('');
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -47,26 +46,13 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
     null
   );
 
-  const settings = [
-    <Link href="/user/edit">Profile</Link>,
-    <Link href="/admin">Admin</Link>,
-    <Button
-      onClick={() => {
-        accountActions.signOut();
-        router.reload();
-      }}
-    >
-      Logout
-    </Button>,
-  ];
-
   useEffect(() => {
     const token = sessionStorage.getItem('token');
+    setJwtToken(token);
     if (token) {
-      setJwtToken(token);
       setIsLoggedIn(true);
       setUsername(sessionStorage.getItem('username') ?? 'User');
-      setisAdmin(sessionStorage.getItem('roles')!.includes('Admin'));
+      setisAdmin(sessionStorage.getItem('roles')?.includes('Admin'));
     } else {
       setIsLoggedIn(false);
     }
@@ -86,6 +72,24 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const settings = [
+    <Link href={`/user/edit?token=${jwtToken}`}>Profile</Link>,
+    <Button
+      onClick={() => {
+        dispatcher(accountActions.signOut());
+        router.reload();
+      }}
+    >
+      Logout
+    </Button>,
+  ];
+
+  if (isAdmin) {
+    settings.unshift(
+      <Link href={`/admin/pending-exercises?token=${jwtToken}`}>Admin</Link>
+    );
+  }
 
   return (
     <>
@@ -142,8 +146,10 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                {pages.map((page) => (
-                  <Typography textAlign="center">{page}</Typography>
+                {pages.map((page, index) => (
+                  <Typography textAlign="center" key={index}>
+                    {page}
+                  </Typography>
                 ))}
               </Menu>
             </Box>

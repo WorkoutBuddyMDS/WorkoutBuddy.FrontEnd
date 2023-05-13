@@ -25,6 +25,7 @@ import BackButton from '@/components/Buttons/BackButton';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import BasicAlert from '@/components/Alerts/BasicAlert';
+import { BasicLoader } from '@/components/Loader/BasicLoader';
 
 const registerModelInitialState = {
   name: '',
@@ -39,11 +40,13 @@ const Register = () => {
   const router = useRouter();
   const dispatcher = useDispatch();
   const [registerModel, setRegisterModel] = useState(registerModelInitialState);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await axios({
         method: 'post',
@@ -53,8 +56,12 @@ const Register = () => {
       dispatcher(accountActions.register(res.data));
 
       await router.push('/');
-    } catch (error: any) {
-      setError(error.data[0].errorMessage);
+    } catch ({ response }) {
+      setError(
+        response.data[0].propertyName + ': ' + response.data[0].errorMessage
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,6 +78,7 @@ const Register = () => {
 
   return (
     <>
+      <BasicLoader open={loading} />
       <BackButton
         sx={{
           position: 'absolute',

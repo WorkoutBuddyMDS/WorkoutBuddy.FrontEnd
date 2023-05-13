@@ -78,14 +78,6 @@ function AdminNavigationLayout({ children }: { children: React.ReactElement }) {
   const mainListItems = (
     <React.Fragment>
       <ListItemButton>
-        <Link href="/admin">
-          <ListItemIcon>
-            <AccountBox />
-          </ListItemIcon>
-          {open && <ListItemText primary="Your profile" />}
-        </Link>
-      </ListItemButton>
-      <ListItemButton>
         <Link href="/admin/pending-exercises">
           <ListItemIcon>
             <FitnessCenter />

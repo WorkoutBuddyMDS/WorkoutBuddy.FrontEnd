@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -20,6 +20,7 @@ import {
   SupervisorAccount as SupervisorAccountIcon,
 } from '@mui/icons-material';
 import AdminNavigationLayout from '@/components/Layouts/AdminNavigationLayout';
+import { useRouter } from 'next/navigation';
 
 const users = [
   {
@@ -41,6 +42,17 @@ const users = [
 const UsersPage = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    setLoading(true);
+    const roles = sessionStorage.getItem('roles');
+    if (!roles?.includes('admin')) {
+      router.push('/');
+      setLoading(false);
+    }
+  }, []);
 
   const handleMakeAdminClick = (userId) => {
     console.log(`Make admin clicked for user with ID ${userId}`);

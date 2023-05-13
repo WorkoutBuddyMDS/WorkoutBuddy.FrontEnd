@@ -34,6 +34,10 @@ const accountSlice = createSlice({
       sessionStorage.removeItem('expiration');
       sessionStorage.removeItem('username');
       sessionStorage.removeItem('roles');
+      localStorage.removeItem('token');
+      localStorage.removeItem('expiration');
+      localStorage.removeItem('username');
+      localStorage.removeItem('roles');
       return {
         token: '',
         expiration: 0,

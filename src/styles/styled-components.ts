@@ -30,5 +30,6 @@ export const StyledLink = styled(Link)<{ hoverable?: boolean }>(
     font-family: ${theme.typography?.text1};
     text-decoration: none;
     color: ${theme.palette.secondary.main};
+    margin: 0 15px;
 `
 );

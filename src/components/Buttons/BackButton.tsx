@@ -3,10 +3,10 @@ import Button from '@mui/material/Button';
 import { ArrowLeft } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 
-const BackButton = () => {
+const BackButton = (props: any) => {
   const router = useRouter();
   return (
-    <Button variant="text" onClick={router.back}>
+    <Button {...props} variant="text" onClick={router.back}>
       <ArrowLeft />
       Back
     </Button>
