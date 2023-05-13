@@ -1,22 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/system';
 import { Typography, Box, Button } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
-import AuthHeader from '@/utils/authrorizationHeader';
-import { useRouter } from 'next/navigation';
 import { MuscleIcon } from '@/components/Icons/MuscleIcon';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import Copyright from '@/components/Copyright/Copyright';
-
-const StyledTypography = styled(Typography)(
-  ({ theme }) =>
-    `margin-left: 10px;
-color: ${theme.palette.colorText.alternative};
-
-font-size: 30px;`
-);
+import Link from 'next/link';
 
 const StyledSection1 = styled(Box)`
   padding: 50px;
@@ -49,24 +40,27 @@ const DetailSection = styled(Box)`
 `;
 
 const Index = () => {
-  const router = useRouter();
-  const username = useRef<string>('');
+  const [username, setUsername] = useState<string | null>('');
 
   useEffect(() => {
-    username.current = sessionStorage.getItem('username') || '';
+    setUsername(sessionStorage.getItem('username'));
   }, []);
 
   return (
     <>
       <BlackBackgroundSection>
-        <Typography variant="h5">
-          Workout your body {username.current}
-        </Typography>
+        <Typography variant="h5">Workout your body</Typography>
         <Typography variant="h3" sx={{ textAlign: 'center' }}>
           Transform Your Body and Mind with Your Ultimate Fitness Companion
         </Typography>
         <MuscleIcon />
-        <Button variant="contained">GET STARTED</Button>
+        {username ? (
+          <Typography variant="h4">Welcome, {username}</Typography>
+        ) : (
+          <Link href="/login">
+            <Button variant="contained">GET STARTED</Button>
+          </Link>
+        )}
       </BlackBackgroundSection>
       <StyledSection2 sx={{ marginTop: '-85px' }}>
         <DetailSection>

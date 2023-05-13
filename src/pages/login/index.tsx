@@ -21,6 +21,8 @@ import { StyledLink } from '@/styles/styled-components';
 import { useRouter } from 'next/router';
 import BackButton from '@/components/Buttons/BackButton';
 import { NextPage } from 'next';
+import { BasicLoader } from '@/components/Loader/BasicLoader';
+import BasicAlert from '@/components/Alerts/BasicAlert';
 interface Validator {
   [key: string]: {
     validator: (el: string) => boolean;
@@ -88,19 +90,13 @@ const Login: NextPage<Props> = ({ lang }) => {
   );
   const [showPassword, setShowPassword] = useState(false);
 
+  const [errorReq, setErrorReq] = useState<string | null>('');
   const [error, setError] = useState({
     email: '',
     password: '',
   });
 
   const [load, setLoad] = useState(false);
-
-  useEffect(() => {
-    setLoad(true);
-    setTimeout(() => {
-      setLoad(false);
-    }, 2000);
-  }, []);
 
   const handleFormSubmit = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -133,14 +129,21 @@ const Login: NextPage<Props> = ({ lang }) => {
       return;
     }
 
-    const res = await axios({
-      method: 'post',
-      url: 'https://localhost:7132/UserAccount/login',
-      data: loginModel,
-    });
-    dispatcher(accountActions.login(res.data));
+    setLoad(true);
 
-    await router.push('/');
+    try {
+      const res = await axios({
+        method: 'post',
+        url: 'https://localhost:7132/UserAccount/login',
+        data: loginModel,
+      });
+      dispatcher(accountActions.login(res.data));
+      await router.push('/');
+    } catch (e: any) {
+      setErrorReq(e.message);
+    } finally {
+      setLoad(false);
+    }
   };
 
   const updateForm = (
@@ -159,6 +162,7 @@ const Login: NextPage<Props> = ({ lang }) => {
 
   return (
     <>
+      <BasicLoader open={load} />
       <BackButton
         sx={{
           position: 'absolute',
@@ -280,6 +284,9 @@ const Login: NextPage<Props> = ({ lang }) => {
           </Box>
         </Box>
       </Container>
+      {errorReq && (
+        <BasicAlert alert={{ severity: 'error' }} message={errorReq} />
+      )}
     </>
   );
 };
