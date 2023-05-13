@@ -23,7 +23,7 @@ import { accountActions } from '@/store/reducers/account';
 import { RootState } from '@/store';
 
 const pages = [
-  <StyledLink href="/exercises">Exercise</StyledLink>,
+  <StyledLink href="/exercises">Exercises</StyledLink>,
   <StyledLink href="/splits">Splits</StyledLink>,
 ];
 

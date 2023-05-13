@@ -42,7 +42,7 @@ const Register = () => {
   const [registerModel, setRegisterModel] = useState(registerModelInitialState);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
