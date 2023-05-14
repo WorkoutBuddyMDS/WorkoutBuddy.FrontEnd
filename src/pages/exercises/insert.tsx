@@ -60,47 +60,42 @@ function InsertExercise() {
 
   console.log(exercise);
 
-  const submitHandler = async (e: any) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     let formData = new FormData();
 
-    // @ts-ignore
-    let querryString = `?selectedType.value=${exercise.selectedType.value}&selectedType.label=${exercise.selectedType.label}`;
-
-    formData.append('ExerciseId', exercise.exerciseId);
-    formData.append('Name', exercise.name);
-    formData.append('Description', exercise.description);
-    // @ts-ignore
-    // formData.append('SelectedType', exercise.selectedType);
+    let querryString = `?selectedType.value=${exercise.selectedType.value}&selectedType.label=${exercise.selectedType.label}`
+    
+    formData.append("exerciseId", exercise.exerciseId);
+    formData.append("name", exercise.name);
+    formData.append("description", exercise.description);
+    formData.append("selectedType", exercise.selectedType);
     let index = 0;
     debugger;
-    for (let mg of exercise.selectedMuscleGroups) {
-      formData.append('selectedMuscleGroups', mg);
-      // @ts-ignore
-      querryString += `&selectedMuscleGroups[${index}].value=${mg.value}`;
-      // @ts-ignore
-      querryString += `&selectedMuscleGroups[${index}].label=${mg.label}`;
+    for(let mg of exercise.selectedMuscleGroups){
+      formData.append("selectedMuscleGroups", mg);
+      querryString += `&selectedMuscleGroups[${index}].value=${mg.value}`
+      querryString += `&selectedMuscleGroups[${index}].label=${mg.label}`
       index++;
     }
-    formData.append('Image', exercise.image);
+    formData.append("image", exercise.image);
+    
+    
 
     try {
-      await axios.post(
-        `https://localhost:7132/Exercises/insertExercise${querryString}`,
-        {
-          data: exercise,
+      await axios({
+        method: "post",
+        url: `https://localhost:7132/Exercises/insertExercise${querryString}`,
+        data: formData,
+        headers: {
+          Authorization: AuthHeader(),
+          "Content-Type": "multipart/form-data"
         },
-        {
-          headers: {
-            Authorization: AuthHeader(),
-            // 'Content-Type': '/form-data',
-          },
-        }
-      );
-      router.push('/exercises');
-    } catch (err) {
-      console.log('threaten errs');
+      });
+      router.push("/exercises");
+    } catch (err){
+      console.log("treat errs")
     }
   };
 
