@@ -100,7 +100,8 @@ function InsertSplit() {
     formData.append('splitId', split.splitId);
     formData.append('name', split.name);
     formData.append('description', split.description);
-    formData.append('isPrivate', split.isPrivate);
+    formData.append('isPrivate', split.isPrivate ?? false);
+    debugger;
     let index = 0;
     for (let w of split.workouts) {
       querryString += `&[${index}].id=${w.id}`;

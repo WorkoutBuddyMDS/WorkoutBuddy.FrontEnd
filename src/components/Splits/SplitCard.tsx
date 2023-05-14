@@ -40,8 +40,7 @@ export default function SplitCard({ split }: ISplitCard) {
     let res = confirm('Are you sure you want to delete this split?');
     if (res) {
       try {
-        await axios.post(`https://localhost:7132/Splits/delete`, {
-          data: id,
+        await axios.post(`https://localhost:7132/Split/deleteSplit`, id, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: AuthHeader(),

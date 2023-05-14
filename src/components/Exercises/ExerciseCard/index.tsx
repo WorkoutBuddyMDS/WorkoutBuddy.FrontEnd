@@ -6,25 +6,48 @@ import {
   Typography,
   Button,
 } from '@mui/material';
+import AuthHeader from '@/utils/authrorizationHeader';
+import axios from 'axios';
 
 export const ExerciseCard = ({ exercise, handler }) => {
-  const [approved, setApproved] = useState(false);
-  const [deleted, setDeleted] = useState(false);
+  const [triggerRemove, setTriggerRemove] = useState(false);
+  
 
-  function approveHandler() {
-    setApproved(true);
+  async function approveHandler() {
+    setTriggerRemove(!triggerRemove)
+    await axios.post(
+      `https://localhost:7132/Exercises/approve`,
+      exercise.exerciseId,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: AuthHeader(),
+        },
+      }
+    );
   }
 
-  function deleteHandler() {
-    setDeleted(true);
+  async function deleteHandler() {
+    setTriggerRemove(!triggerRemove)
+    await axios.post(
+      `https://localhost:7132/Exercises/reject`,
+      exercise.exerciseId,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: AuthHeader(),
+        },
+      }
+    );
   }
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <>
+    {!triggerRemove && <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
         height="140"
-        image={exercise.imageSrc}
+        src={`https://localhost:7132/Image/getImageById?id=${exercise.idImage}`}
         alt={exercise.name}
       />
       <CardContent>
@@ -38,7 +61,6 @@ export const ExerciseCard = ({ exercise, handler }) => {
           <Button
             variant="contained"
             color="secondary"
-            disabled={approved || deleted}
             onClick={approveHandler}
           >
             Approve
@@ -46,13 +68,13 @@ export const ExerciseCard = ({ exercise, handler }) => {
           <Button
             variant="contained"
             color="warning"
-            disabled={approved || deleted}
             onClick={deleteHandler}
           >
             Delete
           </Button>
         </div>
       </CardContent>
-    </Card>
+    </Card>}
+    </>
   );
 };

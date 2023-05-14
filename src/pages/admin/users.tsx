@@ -48,7 +48,7 @@ const UsersPage = () => {
   useEffect(() => {
     setLoading(true);
     const roles = sessionStorage.getItem('roles');
-    if (!roles?.includes('admin')) {
+    if (!roles?.includes('Admin')) {
       router.push('/');
       setLoading(false);
     }
