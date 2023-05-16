@@ -11,20 +11,6 @@ import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import { DatePicker } from '@mui/x-date-pickers';
 
 const EditUserPage = () => {
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
-  const handleSavePassword = () => {
-    // TODO: Implement password update logic here
-    handleCloseModal();
-  };
   return (
     <>
       <form noValidate>
@@ -107,56 +93,7 @@ const EditUserPage = () => {
         <Button type="submit" variant="contained" color="primary">
           Save
         </Button>
-        <Button
-          type="button"
-          onClick={handleOpenModal}
-          variant="outlined"
-          color="secondary"
-        >
-          Change password
-        </Button>
       </form>
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>Change Password</DialogTitle>
-        <DialogContent>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="currentPassword"
-            label="Current Password"
-            name="currentPassword"
-            type="password"
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="newPassword"
-            label="New Password"
-            name="newPassword"
-            type="password"
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="confirmPassword"
-            label="Confirm New Password"
-            name="confirmPassword"
-            type="password"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal}>Cancel</Button>
-          <Button onClick={handleSavePassword} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };
