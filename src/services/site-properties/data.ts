@@ -77,6 +77,9 @@ export const text: Text = {
     'pages.exercises.insert.type-of-exercises.text': {
       value: 'Tipul de exercițiu',
     },
+    'pages.admin.pending-exercises.name-exercise.text': {
+      value: 'Nume exercitiu',
+    },
     'pages.exercises.insert.groups-of-muscles.text': {
       value: 'Grupe musculare',
     },
@@ -128,6 +131,9 @@ export const text: Text = {
     'pages.home.index.title.text': {
       value: 'Antreneaza-ti corpul',
     },
+    'general.description.placeholder.text': {
+      value: 'Descriere',
+    },
     'pages.home.index.subtitle.text': {
       value:
         'Transforma-ti corpul si mintea cu cel mai bun insotitor de fitness',
@@ -165,6 +171,9 @@ export const text: Text = {
     'navigation-layout.profile.button': {
       value: 'Profil',
     },
+    'pages.login.index.submit.text': {
+      value: 'Conecteaza-te',
+    },
     'navigation-layout.admin.button': {
       value: 'Admin',
     },
@@ -184,6 +193,9 @@ export const text: Text = {
     },
     'general.accept.text': {
       value: 'Accept',
+    },
+    'pages.admin.pending-exercises.name-exercise.text': {
+      value: 'Name of the exercise',
     },
     'general.delete.text': {
       value: 'Delete',
@@ -263,11 +275,17 @@ export const text: Text = {
     'pages.login.index.no-account.text': {
       value: "Don't have an account? Let's get started",
     },
+    'pages.login.index.submit.text': {
+      value: 'Sign in',
+    },
     'pages.register.index.title': {
       value: 'Register',
     },
     'general.name.placeholder.text': {
       value: 'Name',
+    },
+    'general.description.placeholder.text': {
+      value: 'Description',
     },
     'general.username.placeholder.text': {
       value: 'Username',

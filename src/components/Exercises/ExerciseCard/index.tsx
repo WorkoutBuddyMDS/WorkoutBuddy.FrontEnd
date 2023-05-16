@@ -7,7 +7,13 @@ import {
   Button,
 } from '@mui/material';
 
-export const ExerciseCard = ({ exercise, handler }) => {
+export const ExerciseCard = ({
+  exercise,
+  text,
+}: {
+  exercise: any;
+  text: any;
+}) => {
   const [approved, setApproved] = useState(false);
   const [deleted, setDeleted] = useState(false);
 
@@ -29,10 +35,10 @@ export const ExerciseCard = ({ exercise, handler }) => {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Name: {exercise.name}
+          {text.nameExercise}: {exercise.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Exercise Type: {exercise.exerciseType}
+          {text.exerciseType}: {exercise.exerciseType}
         </Typography>
         <div className="btnGroup">
           <Button
@@ -41,7 +47,7 @@ export const ExerciseCard = ({ exercise, handler }) => {
             disabled={approved || deleted}
             onClick={approveHandler}
           >
-            Approve
+            {text.accept}
           </Button>
           <Button
             variant="contained"
@@ -49,7 +55,7 @@ export const ExerciseCard = ({ exercise, handler }) => {
             disabled={approved || deleted}
             onClick={deleteHandler}
           >
-            Delete
+            {text.delete}
           </Button>
         </div>
       </CardContent>

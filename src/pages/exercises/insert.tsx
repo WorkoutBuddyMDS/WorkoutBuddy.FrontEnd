@@ -7,18 +7,16 @@ import {
   Button,
   Container,
   FormControl,
-  FormLabel,
   Grid,
-  Input,
   InputLabel,
   MenuItem,
   Select,
   Stack,
-  TextareaAutosize,
   TextField,
   Typography,
 } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
+import useText from '@/services/site-properties/parsing';
 
 const exerciseInitialState = {
   exerciseId: '00000000-0000-0000-0000-000000000000',
@@ -35,6 +33,7 @@ function InsertExercise() {
   const router = useRouter();
   const [exercise, setExercise] = useState(exerciseInitialState);
 
+  const { locale } = useRouter();
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params?.get('id');
@@ -57,8 +56,6 @@ function InsertExercise() {
 
     getExercise();
   }, []);
-
-  console.log(exercise);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
@@ -104,6 +101,21 @@ function InsertExercise() {
     }
   };
 
+  const text = {
+    name: useText('general.name.placeholder.text', locale),
+    description: useText('general.description.placeholder.text', locale),
+    typeOfExercise: useText(
+      'pages.exercises.insert.type-of-exercises.text',
+      locale
+    ),
+    groupsOfMuscles: useText(
+      'pages.exercises.insert.groups-of-muscles.text',
+      locale
+    ),
+    image: useText('general.image.placeholder.text', locale),
+    submit: useText('general.submit.text', locale),
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -134,7 +146,7 @@ function InsertExercise() {
                 }
                 required
                 fullWidth
-                label="Name"
+                label={text.name}
                 id="name"
                 type="text"
               />
@@ -147,7 +159,7 @@ function InsertExercise() {
                 }
                 multiline
                 rows={5}
-                label="Description"
+                label={text.description}
                 fullWidth
               />
             </Grid>
@@ -163,7 +175,7 @@ function InsertExercise() {
                 <Select
                   labelId="type-of-exercise"
                   id="type-of-exercise"
-                  label="Type of exercise"
+                  label={text.typeOfExercise}
                   value={exercise.selectedType?.label || ''}
                   onChange={(e) =>
                     setExercise({
@@ -200,7 +212,7 @@ function InsertExercise() {
                 <Select
                   labelId="groups-of-muscles"
                   id="groups-of-muscles"
-                  label="Groups of muscles"
+                  label={text.groupsOfMuscles}
                   multiple
                   value={
                     exercise.selectedMuscleGroups.map(
@@ -237,10 +249,9 @@ function InsertExercise() {
                 fullWidth
                 onChange={(e) => {
                   // @ts-ignore
-                  console.log(e.target);
                   setExercise({ ...exercise, image: e.target.files[0] });
                 }}
-                placeholder="Image"
+                placeholder={text.image}
                 type="file"
               />
             </Grid>
@@ -249,7 +260,7 @@ function InsertExercise() {
                 sx={{ backgroundColor: 'blue', color: 'white', width: 'full' }}
                 onClick={submitHandler}
               >
-                Submit
+                {text.submit}
               </Button>
             </Stack>
           </Grid>

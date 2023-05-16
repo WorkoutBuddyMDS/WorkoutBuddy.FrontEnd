@@ -7,11 +7,13 @@ import Link from 'next/link';
 import { IExerciseItem } from '@/pages/exercises';
 
 export default function Exercise({
+  text,
   exercise,
   deleteExercises,
 }: {
   exercise: IExerciseItem;
   deleteExercises: (exerciseId: string) => void;
+  text: { [key: string]: string };
 }) {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -27,7 +29,7 @@ export default function Exercise({
   };
 
   const deleteHandler = async (exerciseId: string) => {
-    let res = confirm('Are you sure you want to delete this exercise?');
+    let res = confirm(text.confirmDelete);
     if (res) {
       try {
         await axios.post('https://localhost:7132/Exercises/delete', {
@@ -82,7 +84,7 @@ export default function Exercise({
               style={{ flex: '1 1 0', fontSize: '10px' }}
               href={`/exercises/${exercise.exerciseId.toString()}`}
             >
-              View
+              {text.view}
             </Link>
             {isAdmin && (
               <>
@@ -97,7 +99,7 @@ export default function Exercise({
                   }}
                   onClick={(e) => editHandler(exercise.exerciseId)}
                 >
-                  Edit
+                  {text.edit}
                 </Button>
                 <Button
                   sx={{
@@ -110,7 +112,7 @@ export default function Exercise({
                   }}
                   onClick={(e) => deleteHandler(exercise.exerciseId)}
                 >
-                  Delete
+                  {text.edit}
                 </Button>
               </>
             )}

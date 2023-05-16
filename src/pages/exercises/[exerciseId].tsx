@@ -26,6 +26,7 @@ import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import { BasicLoader } from '@/components/Loader/BasicLoader';
 import BackButton from '@/components/Buttons/BackButton';
 import Link from 'next/link';
+import useText from '@/services/site-properties/parsing';
 
 interface IExercise {
   name: string;
@@ -40,6 +41,7 @@ function ViewExercise() {
   const [error, setError] = useState();
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+  const { locale } = router;
   const { exerciseId } = router.query;
 
   const [open, setOpen] = useState(false);
@@ -88,6 +90,14 @@ function ViewExercise() {
     }
   }, [exerciseId]);
 
+  const text = {
+    musclesTargeted: useText('pages.exercises.exercise.muscles', locale),
+    modalTitle: useText('pages.exercises.exercise.modal.title', locale),
+    modalContent: useText('pages.exercises.exercise.modal.content', locale),
+    edit: useText('general.edit.text', locale),
+    delete: useText('general.delete.text', locale),
+    cancel: useText('general.modal.text.cancel', locale),
+  };
   return (
     <>
       <BasicLoader open={loading} />
@@ -115,7 +125,7 @@ function ViewExercise() {
             </Box>
             <Box sx={{ mt: 2 }}>
               <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                Muscles Targeted
+                {text.musclesTargeted}
               </Typography>
               <Grid container spacing={2}>
                 {exercise?.muscleGroups.map((mg, index) => (
@@ -151,21 +161,19 @@ function ViewExercise() {
           )}
         </Card>
         <Link href={`/exercises/insert?id=${exerciseId}`}>
-          <Button variant="outlined">Edit</Button>
+          <Button variant="outlined">{text.edit}</Button>
         </Link>
         <Button variant="contained" color="error" onClick={handleOpen}>
-          Delete
+          {text.delete}
         </Button>
       </Container>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Delete Exercise</DialogTitle>
-        <DialogContent>
-          Are you sure you want to delete this exercise?
-        </DialogContent>
+        <DialogTitle>{text.modalTitle}</DialogTitle>
+        <DialogContent>{text.modalContent}</DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>{text.cancel}</Button>
           <Button onClick={handleDelete} autoFocus>
-            Delete
+            {text.delete}
           </Button>
         </DialogActions>
       </Dialog>
