@@ -20,7 +20,9 @@ import {
   SupervisorAccount as SupervisorAccountIcon,
 } from '@mui/icons-material';
 import AdminNavigationLayout from '@/components/Layouts/AdminNavigationLayout';
-import { useRouter } from 'next/navigation';
+import { useRouter as useNavigation } from 'next/navigation';
+import { useRouter } from 'next/router';
+import useText from '@/services/site-properties/parsing';
 
 const users = [
   {
@@ -43,8 +45,22 @@ const UsersPage = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const router = useNavigation();
+  const { locale } = useRouter();
 
+  const text = {
+    firstName: useText('pages.admin.users.table.first-name', locale),
+    lastName: useText('pages.admin.users.table.last-name', locale),
+    email: useText('pages.admin.users.table.email', locale),
+    roles: useText('pages.admin.users.table.roles', locale),
+    actions: useText('pages.admin.users.table.actions', locale),
+    makeAdmin: useText('pages.admin.users.tooltip.make-admin', locale),
+    deleteUser: useText('pages.admin.users.table.delete-user', locale),
+    deleteUserModal: useText('pages.admin.users.modal.title', locale),
+    deleteModalContent: useText('pages.admin.users.modal.content', locale),
+    cancel: useText('general.modal.text.cancel', locale),
+    delete: useText('general.delete.text'),
+  };
   useEffect(() => {
     setLoading(true);
     const roles = sessionStorage.getItem('roles');
@@ -54,11 +70,11 @@ const UsersPage = () => {
     }
   }, []);
 
-  const handleMakeAdminClick = (userId) => {
+  const handleMakeAdminClick = (userId: string) => {
     console.log(`Make admin clicked for user with ID ${userId}`);
   };
 
-  const handleDeleteClick = (userId) => {
+  const handleDeleteClick = (userId: string) => {
     setSelectedUserId(userId);
     setDeleteDialogOpen(true);
   };
@@ -80,11 +96,11 @@ const UsersPage = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>First Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Roles</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>{text.firstName}</TableCell>
+              <TableCell>{text.lastName}</TableCell>
+              <TableCell>{text.email}</TableCell>
+              <TableCell>{text.roles}</TableCell>
+              <TableCell>{text.actions}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -95,7 +111,7 @@ const UsersPage = () => {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.roles.join(', ')}</TableCell>
                 <TableCell>
-                  <Tooltip title="Make Admin">
+                  <Tooltip title={text.makeAdmin}>
                     <IconButton
                       aria-label="make admin"
                       onClick={() => handleMakeAdminClick(user.id)}
@@ -103,7 +119,7 @@ const UsersPage = () => {
                       <SupervisorAccountIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Delete User">
+                  <Tooltip title={text.deleteUser}>
                     <IconButton
                       aria-label="delete user"
                       onClick={() => handleDeleteClick(user.id)}
@@ -118,14 +134,12 @@ const UsersPage = () => {
         </Table>
       </TableContainer>
       <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose}>
-        <DialogTitle>Delete User</DialogTitle>
-        <DialogContent>
-          Are you sure you want to delete this user?
-        </DialogContent>
+        <DialogTitle>{text.deleteUserModal}</DialogTitle>
+        <DialogContent>{text.deleteModalContent}</DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteDialogClose}>Cancel</Button>
+          <Button onClick={handleDeleteDialogClose}>{text.cancel}</Button>
           <Button onClick={handleDeleteDialogConfirm} color="error">
-            Delete
+            {text.delete}
           </Button>
         </DialogActions>
       </Dialog>

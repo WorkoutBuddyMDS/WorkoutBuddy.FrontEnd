@@ -9,21 +9,22 @@ import {
 } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import { DatePicker } from '@mui/x-date-pickers';
+import useText from '@/services/site-properties/parsing';
+import { useRouter } from 'next/router';
 
 const EditUserPage = () => {
-  const [openModal, setOpenModal] = useState(false);
+  const { locale } = useRouter();
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
-  const handleSavePassword = () => {
-    // TODO: Implement password update logic here
-    handleCloseModal();
+  const text = {
+    name: useText('general.name.placeholder.text', locale),
+    username: useText('general.username.placeholder.text', locale),
+    email: useText('general.email.placeholder.text', locale),
+    password: useText('general.password.placeholder.text', locale),
+    dateOfBirth: useText('general.date-of-birth.placeholder.text', locale),
+    weight: useText('general.weight.placeholder.text', locale),
+    phone: useText('general.phone.placeholder.text', locale),
+    roles: useText('pages.admin.users.table.roles', locale),
+    save: useText('general.save.text', locale),
   };
   return (
     <>
@@ -34,7 +35,7 @@ const EditUserPage = () => {
           required
           fullWidth
           id="name"
-          label="Name"
+          label={text.name}
           name="name"
           autoComplete="name"
           autoFocus
@@ -45,7 +46,7 @@ const EditUserPage = () => {
           required
           fullWidth
           id="username"
-          label="Username"
+          label={text.username}
           name="username"
           autoComplete="username"
         />
@@ -55,7 +56,7 @@ const EditUserPage = () => {
           required
           fullWidth
           id="email"
-          label="Email"
+          label={text.email}
           name="email"
           autoComplete="email"
         />
@@ -65,7 +66,7 @@ const EditUserPage = () => {
           required
           fullWidth
           id="phone"
-          label="Phone"
+          label={text.phone}
           name="phone"
           autoComplete="phone"
         />
@@ -74,7 +75,7 @@ const EditUserPage = () => {
           margin="normal"
           fullWidth
           id="roles"
-          label="Roles"
+          label={text.roles}
           name="roles"
           autoComplete="roles"
           disabled
@@ -85,7 +86,7 @@ const EditUserPage = () => {
           margin="normal"
           fullWidth
           id="weight"
-          label="Weight"
+          label={text.weight}
           name="weight"
           autoComplete="weight"
           type="number"
@@ -105,58 +106,9 @@ const EditUserPage = () => {
           rows={4}
         />
         <Button type="submit" variant="contained" color="primary">
-          Save
-        </Button>
-        <Button
-          type="button"
-          onClick={handleOpenModal}
-          variant="outlined"
-          color="secondary"
-        >
-          Change password
+          {text.save}
         </Button>
       </form>
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>Change Password</DialogTitle>
-        <DialogContent>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="currentPassword"
-            label="Current Password"
-            name="currentPassword"
-            type="password"
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="newPassword"
-            label="New Password"
-            name="newPassword"
-            type="password"
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="confirmPassword"
-            label="Confirm New Password"
-            name="confirmPassword"
-            type="password"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal}>Cancel</Button>
-          <Button onClick={handleSavePassword} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };

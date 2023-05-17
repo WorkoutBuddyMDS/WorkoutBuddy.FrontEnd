@@ -26,6 +26,7 @@ import { useRouter } from 'next/router';
 import dayjs from 'dayjs';
 import BasicAlert from '@/components/Alerts/BasicAlert';
 import { BasicLoader } from '@/components/Loader/BasicLoader';
+import useText from '@/services/site-properties/parsing';
 
 const registerModelInitialState = {
   name: '',
@@ -38,6 +39,7 @@ const registerModelInitialState = {
 
 const Register = () => {
   const router = useRouter();
+  const { locale } = router;
   const dispatcher = useDispatch();
   const [registerModel, setRegisterModel] = useState(registerModelInitialState);
   const [loading, setLoading] = useState(false);
@@ -76,6 +78,18 @@ const Register = () => {
     });
   };
 
+  const text = {
+    registerTitle: useText('pages.register.index.title', locale),
+    name: useText('general.name.placeholder.text', locale),
+    email: useText('general.email.placeholder.text', locale),
+    username: useText('general.username.placeholder.text', locale),
+    password: useText('general.password.placeholder.text', locale),
+    dateOfBirth: useText('general.date-of-birth.placeholder.text', locale),
+    weight: useText('general.weight.placeholder.text', locale),
+    createAccount: useText('pages.register.index.button.signup', locale),
+    link: useText('pages.register.index.link.text', locale),
+  };
+
   return (
     <>
       <BasicLoader open={loading} />
@@ -108,7 +122,7 @@ const Register = () => {
             <AccountCircleOutlined height="40px" width="40px" />
           </Avatar>
           <Typography component="h1" variant="h3" sx={{ marginBottom: '30px' }}>
-            Sign up
+            {text.registerTitle}
           </Typography>
           <Box
             component="form"
@@ -123,7 +137,7 @@ const Register = () => {
                   required
                   fullWidth
                   id="name"
-                  label="Name"
+                  label={text.name}
                   autoFocus
                   value={registerModel.name}
                   onChange={updateForm}
@@ -134,7 +148,7 @@ const Register = () => {
                   required
                   fullWidth
                   id="username"
-                  label="Username"
+                  label={text.username}
                   name="username"
                   value={registerModel.username}
                   onChange={updateForm}
@@ -145,7 +159,7 @@ const Register = () => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label={text.email}
                   name="email"
                   autoComplete="email"
                   value={registerModel.email}
@@ -157,7 +171,7 @@ const Register = () => {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label={text.password}
                   type={showPassword ? 'text' : 'password'}
                   id="passwordString"
                   autoComplete="new-password"
@@ -189,7 +203,7 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <DatePicker
-                  label="Date of birth"
+                  label={text.dateOfBirth}
                   sx={{ width: '100%' }}
                   value={registerModel.birthDay}
                   onChange={(ev) => {
@@ -208,7 +222,7 @@ const Register = () => {
                   fullWidth
                   name="weight"
                   id="weight"
-                  label="Weight"
+                  label={text.weight}
                   value={registerModel.weight}
                   onChange={updateForm}
                   InputProps={{
@@ -231,13 +245,11 @@ const Register = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {text.createAccount}
             </Button>
             <Grid container justifyContent="center" sx={{ marginTop: '5px' }}>
               <Grid item>
-                <StyledLink href="/login">
-                  Already have an account? Sign in
-                </StyledLink>
+                <StyledLink href="/login">{text.link}</StyledLink>
               </Grid>
             </Grid>
           </Box>
