@@ -87,7 +87,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
 
   if (isAdmin) {
     settings.unshift(
-      <Link href={`/admin/pending-exercises?token=${jwtToken}`}>Admin</Link>
+      <Link href={`/admin/pending-exercises`}>Admin</Link>
     );
   }
 
