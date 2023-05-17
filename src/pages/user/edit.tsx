@@ -56,9 +56,9 @@ const EditUserPage = () => {
     password: useText('general.password.placeholder.text', locale),
     dateOfBirth: useText('general.date-of-birth.placeholder.text', locale),
     weight: useText('general.weight.placeholder.text', locale),
-    phone: useText('general.phone.placeholder.text', locale),
     roles: useText('pages.admin.users.table.roles', locale),
     save: useText('general.save.text', locale),
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -109,7 +109,7 @@ const EditUserPage = () => {
             required
             fullWidth
             id="name"
-            label="Name"
+            label={text.name}
             name="name"
             autoComplete="name"
             autoFocus
@@ -124,7 +124,7 @@ const EditUserPage = () => {
             required
             fullWidth
             id="username"
-            label="Username"
+            label={text.username}
             name="username"
             autoComplete="username"
             value={user.username}
@@ -141,7 +141,7 @@ const EditUserPage = () => {
             required
             fullWidth
             id="email"
-            label="Email"
+            label={text.email}
             name="email"
             autoComplete="email"
             value={user.email}
@@ -151,7 +151,7 @@ const EditUserPage = () => {
           />
           <DatePicker
             sx={{ width: '100%' }}
-            label="Birthday"
+            label={text.dateOfBirth}
             value={user.birthDate}
             onChange={(e) => {
               if (e) {
@@ -167,7 +167,7 @@ const EditUserPage = () => {
             margin="normal"
             fullWidth
             id="weight"
-            label="Weight"
+            label={text.weight}
             name="weight"
             autoComplete="weight"
             type="number"
@@ -181,7 +181,7 @@ const EditUserPage = () => {
             variant="outlined"
             fullWidth
             id="roles"
-            label="Roles"
+            label={text.roles}
             name="roles"
             autoComplete="roles"
             value={user.roles.join(', ')}
@@ -193,7 +193,7 @@ const EditUserPage = () => {
             variant="contained"
             color="primary"
           >
-            Save
+            {text.save}
           </Button>
         </form>
       </Container>
