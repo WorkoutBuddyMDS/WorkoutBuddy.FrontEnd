@@ -21,6 +21,7 @@ import { FitnessCenter } from '@mui/icons-material';
 import Link from 'next/link';
 import { accountActions } from '@/store/reducers/account';
 import { RootState } from '@/store';
+import LanguageSwitch from '@/components/LanguageSwitch/LanguageSwitch';
 
 const pages = [
   <StyledLink href="/exercises">Exercises</StyledLink>,
@@ -177,6 +178,8 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                 </Typography>
               ))}
             </Box>
+
+            <LanguageSwitch locale={router.locale} />
 
             {isLoggedIn ? (
               <Box sx={{ flexGrow: 0 }}>

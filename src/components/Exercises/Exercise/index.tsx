@@ -32,13 +32,16 @@ export default function Exercise({
     let res = confirm(text.confirmDelete);
     if (res) {
       try {
-        await axios.post('https://localhost:7132/Exercises/delete', {
-          data: exerciseId,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: AuthHeader(),
-          },
-        });
+        await axios.post(
+          'https://localhost:7132/Exercises/delete',
+          exerciseId,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: AuthHeader(),
+            },
+          }
+        );
         deleteExercises(exerciseId);
       } catch (err) {}
     }
