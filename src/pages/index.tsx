@@ -8,6 +8,8 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import Copyright from '@/components/Copyright/Copyright';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import useText from '@/services/site-properties/parsing';
 
 const StyledSection1 = styled(Box)`
   padding: 50px;
@@ -40,25 +42,47 @@ const DetailSection = styled(Box)`
 `;
 
 const Index = () => {
+  const { locale } = useRouter();
   const [username, setUsername] = useState<string | null>('');
 
   useEffect(() => {
     setUsername(sessionStorage.getItem('username'));
   }, []);
 
+  const text = {
+    title: useText('pages.home.index.title.text', locale),
+    subtitle: useText('pages.home.index.subtitle.text', locale),
+    welcome: useText('pages.home.index.welcome.text', locale),
+    getStarted: useText('pages.home.index.button.started', locale),
+    beginnerTitle: useText('pages.home.index.section.beginner.title', locale),
+    beginnerText: useText('pages.home.index.section.beginner.text', locale),
+    experiencedTitle: useText(
+      'pages.home.index.section.experienced.title',
+      locale
+    ),
+    experiencedText: useText(
+      'pages.home.index.section.experienced.text',
+      locale
+    ),
+    allAgesTitle: useText('pages.home.index.section.allages.title', locale),
+    allAgesText: useText('pages.home.index.section.allages.text', locale),
+  };
   return (
     <>
       <BlackBackgroundSection>
-        <Typography variant="h5">Workout your body</Typography>
+        <Typography variant="h5">{text.title}</Typography>
         <Typography variant="h3" sx={{ textAlign: 'center' }}>
-          Transform Your Body and Mind with Your Ultimate Fitness Companion
+          {text.subtitle}
         </Typography>
         <MuscleIcon />
         {username ? (
-          <Typography variant="h4">Welcome, {username}</Typography>
+          <Typography variant="h4">
+            {text.welcome}
+            {username}
+          </Typography>
         ) : (
           <Link href="/login">
-            <Button variant="contained">GET STARTED</Button>
+            <Button variant="contained">{text.getStarted}</Button>
           </Link>
         )}
       </BlackBackgroundSection>
@@ -71,11 +95,8 @@ const Index = () => {
               borderRadius: '50%',
             }}
           />
-          <Typography variant="h6">Beginner</Typography>
-          <p>
-            We cater to all experience levels. Don't be shy and see what you're
-            missing
-          </p>
+          <Typography variant="h6">{text.beginnerTitle}</Typography>
+          <p>{text.beginnerText}</p>
         </DetailSection>
         <DetailSection>
           <FitnessCenterIcon
@@ -85,10 +106,8 @@ const Index = () => {
               borderRadius: '50%',
             }}
           />
-          <Typography variant="h6">Experienced</Typography>
-          <p>
-            We even have more intense workouts for the personal trainer in you.
-          </p>
+          <Typography variant="h6">{text.experiencedTitle}</Typography>
+          <p>{text.experiencedText}</p>
         </DetailSection>
         <DetailSection>
           <MonitorHeartIcon
@@ -98,11 +117,8 @@ const Index = () => {
               borderRadius: '50%',
             }}
           />
-          <Typography variant="h6">All ages</Typography>
-          <p>
-            We can train any age level. If you want to have a healthier
-            lifestyle then call us today to find out more.
-          </p>
+          <Typography variant="h6">{text.allAgesTitle}</Typography>
+          <p>{text.allAgesText}</p>
         </DetailSection>
       </StyledSection2>
       <Box

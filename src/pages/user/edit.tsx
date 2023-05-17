@@ -14,8 +14,11 @@ import dayjs from 'dayjs';
 import { BasicLoader } from '@/components/Loader/BasicLoader';
 import BasicAlert from '@/components/Alerts/BasicAlert';
 import { beforeMain } from '@popperjs/core';
+import useText from '@/services/site-properties/parsing';
+import { useRouter } from 'next/router';
 
 const EditUserPage = () => {
+  const { locale } = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [user, setUser] = useState({
@@ -46,6 +49,16 @@ const EditUserPage = () => {
     getUserData();
   }, []);
 
+  const text = {
+    name: useText('general.name.placeholder.text', locale),
+    username: useText('general.username.placeholder.text', locale),
+    email: useText('general.email.placeholder.text', locale),
+    password: useText('general.password.placeholder.text', locale),
+    dateOfBirth: useText('general.date-of-birth.placeholder.text', locale),
+    weight: useText('general.weight.placeholder.text', locale),
+    phone: useText('general.phone.placeholder.text', locale),
+    roles: useText('pages.admin.users.table.roles', locale),
+    save: useText('general.save.text', locale),
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

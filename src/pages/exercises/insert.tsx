@@ -7,18 +7,16 @@ import {
   Button,
   Container,
   FormControl,
-  FormLabel,
   Grid,
-  Input,
   InputLabel,
   MenuItem,
   Select,
   Stack,
-  TextareaAutosize,
   TextField,
   Typography,
 } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
+import useText from '@/services/site-properties/parsing';
 
 const exerciseInitialState = {
   exerciseId: '00000000-0000-0000-0000-000000000000',
@@ -35,6 +33,7 @@ function InsertExercise() {
   const router = useRouter();
   const [exercise, setExercise] = useState(exerciseInitialState);
 
+  const { locale } = useRouter();
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params?.get('id');
@@ -58,50 +57,58 @@ function InsertExercise() {
     getExercise();
   }, []);
 
-  console.log(exercise);
-
   const submitHandler = async (e: any) => {
     e.preventDefault();
 
     let formData = new FormData();
 
-    // @ts-ignore
-    let querryString = `?selectedType.value=${exercise.selectedType.value}&selectedType.label=${exercise.selectedType.label}`;
-
-    formData.append('ExerciseId', exercise.exerciseId);
-    formData.append('Name', exercise.name);
-    formData.append('Description', exercise.description);
-    // @ts-ignore
-    // formData.append('SelectedType', exercise.selectedType);
+    let querryString = `?selectedType.value=${exercise.selectedType.value}&selectedType.label=${exercise.selectedType.label}`
+    
+    formData.append("exerciseId", exercise.exerciseId);
+    formData.append("name", exercise.name);
+    formData.append("description", exercise.description);
+    formData.append("selectedType", exercise.selectedType);
     let index = 0;
     debugger;
-    for (let mg of exercise.selectedMuscleGroups) {
-      formData.append('selectedMuscleGroups', mg);
-      // @ts-ignore
-      querryString += `&selectedMuscleGroups[${index}].value=${mg.value}`;
-      // @ts-ignore
-      querryString += `&selectedMuscleGroups[${index}].label=${mg.label}`;
+    for(let mg of exercise.selectedMuscleGroups){
+      formData.append("selectedMuscleGroups", mg);
+      querryString += `&selectedMuscleGroups[${index}].value=${mg.value}`
+      querryString += `&selectedMuscleGroups[${index}].label=${mg.label}`
       index++;
     }
-    formData.append('Image', exercise.image);
+    formData.append("image", exercise.image);
+    
+    
 
     try {
-      await axios.post(
-        `https://localhost:7132/Exercises/insertExercise${querryString}`,
-        {
-          data: exercise,
+      await axios({
+        method: "post",
+        url: `https://localhost:7132/Exercises/insertExercise${querryString}`,
+        data: formData,
+        headers: {
+          Authorization: AuthHeader(),
+          "Content-Type": "multipart/form-data"
         },
-        {
-          headers: {
-            Authorization: AuthHeader(),
-            // 'Content-Type': '/form-data',
-          },
-        }
-      );
-      router.push('/exercises');
-    } catch (err) {
-      console.log('threaten errs');
+      });
+      router.push("/exercises");
+    } catch (err){
+      console.log("treat errs")
     }
+  };
+
+  const text = {
+    name: useText('general.name.placeholder.text', locale),
+    description: useText('general.description.placeholder.text', locale),
+    typeOfExercise: useText(
+      'pages.exercises.insert.type-of-exercises.text',
+      locale
+    ),
+    groupsOfMuscles: useText(
+      'pages.exercises.insert.groups-of-muscles.text',
+      locale
+    ),
+    image: useText('general.image.placeholder.text', locale),
+    submit: useText('general.submit.text', locale),
   };
 
   return (
@@ -134,7 +141,7 @@ function InsertExercise() {
                 }
                 required
                 fullWidth
-                label="Name"
+                label={text.name}
                 id="name"
                 type="text"
               />
@@ -147,7 +154,7 @@ function InsertExercise() {
                 }
                 multiline
                 rows={5}
-                label="Description"
+                label={text.description}
                 fullWidth
               />
             </Grid>
@@ -163,7 +170,7 @@ function InsertExercise() {
                 <Select
                   labelId="type-of-exercise"
                   id="type-of-exercise"
-                  label="Type of exercise"
+                  label={text.typeOfExercise}
                   value={exercise.selectedType?.label || ''}
                   onChange={(e) =>
                     setExercise({
@@ -200,7 +207,7 @@ function InsertExercise() {
                 <Select
                   labelId="groups-of-muscles"
                   id="groups-of-muscles"
-                  label="Groups of muscles"
+                  label={text.groupsOfMuscles}
                   multiple
                   value={
                     exercise.selectedMuscleGroups.map(
@@ -237,10 +244,9 @@ function InsertExercise() {
                 fullWidth
                 onChange={(e) => {
                   // @ts-ignore
-                  console.log(e.target);
                   setExercise({ ...exercise, image: e.target.files[0] });
                 }}
-                placeholder="Image"
+                placeholder={text.image}
                 type="file"
               />
             </Grid>
@@ -249,7 +255,7 @@ function InsertExercise() {
                 sx={{ backgroundColor: 'blue', color: 'white', width: 'full' }}
                 onClick={submitHandler}
               >
-                Submit
+                {text.submit}
               </Button>
             </Stack>
           </Grid>
