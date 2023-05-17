@@ -21,6 +21,7 @@ import { FitnessCenter } from '@mui/icons-material';
 import Link from 'next/link';
 import { accountActions } from '@/store/reducers/account';
 import { RootState } from '@/store';
+import LanguageSwitch from '@/components/LanguageSwitch/LanguageSwitch';
 
 const pages = [
   <StyledLink href="/exercises">Exercises</StyledLink>,
@@ -74,7 +75,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   };
 
   const settings = [
-    <Link href={`/user/edit?token=${jwtToken}`}>Profile</Link>,
+    <Link href={`/user/edit`}>Profile</Link>,
     <Button
       onClick={() => {
         dispatcher(accountActions.signOut());
@@ -170,7 +171,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                 textDecoration: 'none',
               }}
             >
-              LOGO
+              Workout Buddy
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
@@ -179,6 +180,8 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
                 </Typography>
               ))}
             </Box>
+
+            <LanguageSwitch locale={router.locale} />
 
             {isLoggedIn ? (
               <Box sx={{ flexGrow: 0 }}>

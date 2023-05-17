@@ -3,14 +3,31 @@ import React, { useEffect, useState } from 'react';
 import AdminNavigationLayout from '@/components/Layouts/AdminNavigationLayout';
 import axios from 'axios';
 import AuthHeader from '@/utils/authrorizationHeader';
-import { useRouter } from 'next/navigation';
+import { useRouter as useNavigation } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { BasicLoader } from '@/components/Loader/BasicLoader';
+import useText from '@/services/site-properties/parsing';
 
 function PendingExercises() {
   const [handlerResult, setHandlerResult] = useState(null);
   const [exercises, setExercises] = useState([]);
   const [error, setError] = useState('');
-  const router = useRouter();
+  const router = useNavigation();
+  const { locale } = useRouter();
+  const text = {
+    noExericse: useText('pages.admin.pending-exercises.no-exercises', locale),
+    error: useText("'pages.admin.pending-exercises.error'", locale),
+    accept: useText('general.accept.text', locale),
+    delete: useText('general.delete.text', locale),
+    exerciseType: useText(
+      'pages.exercises.insert.type-of-exercises.text',
+      locale
+    ),
+    nameExercise: useText(
+      'pages.admin.pending-exercises.name-exercise.text',
+      locale
+    ),
+  };
 
   useEffect(() => {
     const roles = sessionStorage.getItem('roles');
@@ -57,6 +74,7 @@ function PendingExercises() {
             <ul className="pendingCards">
               {exercises.map((ex) => (
                 <ExerciseCard
+                  text={text}
                   key={ex.id}
                   exercise={ex}
                   handler={actionHandler}
@@ -64,11 +82,11 @@ function PendingExercises() {
               ))}
             </ul>
           ) : (
-            <p>Nu exista exercitii de aprobat</p>
+            <p>{text.noExericse}</p>
           )}
         </div>
       ) : (
-        <h1>500 - Server-side error occurred</h1>
+        <h1>{text.error}</h1>
       )}
     </>
   );

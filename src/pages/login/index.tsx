@@ -23,6 +23,7 @@ import BackButton from '@/components/Buttons/BackButton';
 import { NextPage } from 'next';
 import { BasicLoader } from '@/components/Loader/BasicLoader';
 import BasicAlert from '@/components/Alerts/BasicAlert';
+import useText from '@/services/site-properties/parsing';
 interface Validator {
   [key: string]: {
     validator: (el: string) => boolean;
@@ -81,9 +82,10 @@ interface Props {
   lang: string;
 }
 
-const Login: NextPage<Props> = ({ lang }) => {
+const Login: NextPage<Props> = () => {
   const dispatcher = useDispatch();
   const router = useRouter();
+  const { locale } = useRouter();
 
   const [loginModel, setLoginModel] = useState<LoginModel>(
     loginModelInitialState
@@ -160,6 +162,13 @@ const Login: NextPage<Props> = ({ lang }) => {
     });
   };
 
+  const text = {
+    signIn: useText('pages.login.index.title', locale),
+    email: useText('general.email.placeholder.text', locale),
+    password: useText('general.password.placeholder.text', locale),
+    signInSubmit: useText('pages.login.index.submit.text', locale),
+    noAccount: useText('pages.login.index.no-account.text', locale),
+  };
   return (
     <>
       <BasicLoader open={load} />
@@ -201,7 +210,7 @@ const Login: NextPage<Props> = ({ lang }) => {
               marginTop: '10px',
             }}
           >
-            Sign in into your account
+            {text.signIn}
           </Typography>
           <Box component="form" onSubmit={handleFormSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -212,7 +221,7 @@ const Login: NextPage<Props> = ({ lang }) => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label={text.email}
                   name="email"
                   autoComplete="email"
                 />
@@ -231,7 +240,7 @@ const Login: NextPage<Props> = ({ lang }) => {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label={text.password}
                   type={showPassword ? 'text' : 'password'}
                   id="password"
                   autoComplete="new-password"
@@ -272,13 +281,11 @@ const Login: NextPage<Props> = ({ lang }) => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {text.signInSubmit}
             </Button>
             <Grid container justifyContent="center" sx={{ marginTop: '5px' }}>
               <Grid item>
-                <StyledLink href="/register">
-                  Don't have an account? Let's get started
-                </StyledLink>
+                <StyledLink href="/register">{text.noAccount}</StyledLink>
               </Grid>
             </Grid>
           </Box>
@@ -291,10 +298,4 @@ const Login: NextPage<Props> = ({ lang }) => {
   );
 };
 
-Login.getInitialProps = async ({ req, locale }) => {
-  const lang = locale || req?.headers['x-language']?.toString();
-  return {
-    lang: lang || 'ro-RO',
-  };
-};
 export default Login;
