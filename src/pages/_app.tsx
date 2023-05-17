@@ -7,7 +7,7 @@ import theme from '@/utils/theme';
 import { StyledEngineProvider } from '@mui/styled-engine';
 import store from '@/store';
 import { Provider } from 'react-redux';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
