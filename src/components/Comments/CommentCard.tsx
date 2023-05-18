@@ -8,6 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import { IComment } from '@/pages/splits/[splitId]';
+import { useRouter } from 'next/router';
+import useText from '@/services/site-properties/parsing';
 
 const backgrounds = [
   `url("data:image/svg+xml, %3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'560\' height=\'185\' viewBox=\'0 0 560 185\' fill=\'none\'%3E%3Cellipse cx=\'102.633\' cy=\'61.0737\' rx=\'102.633\' ry=\'61.0737\' fill=\'%23ED64A6\' /%3E%3Cellipse cx=\'399.573\' cy=\'123.926\' rx=\'102.633\' ry=\'61.0737\' fill=\'%23F56565\' /%3E%3Cellipse cx=\'366.192\' cy=\'73.2292\' rx=\'193.808\' ry=\'73.2292\' fill=\'%2338B2AC\' /%3E%3Cellipse cx=\'222.705\' cy=\'110.585\' rx=\'193.808\' ry=\'73.2292\' fill=\'%23ED8936\' /%3E%3C/svg%3E")`,
@@ -41,6 +43,17 @@ export default function Comment({
   const [newReply, setNewReply] = useState('');
   let replies = commentReplys ?? [];
 
+  const { locale } = useRouter();
+
+  const text = {
+    show: useText('components.comment.card.show.replies', locale),
+    add: useText('components.comment.card.add.replies', locale),
+    replies: useText('components.comment.card.replies', locale),
+    placeholder: useText(
+      'pages.splits.split-id.textarea.placeholder.text',
+      locale
+    ),
+  };
   return (
     <Box>
       <Box
@@ -70,11 +83,11 @@ export default function Comment({
         {isReply && (
           <>
             <Button onClick={() => setShowReplies(!showReplies)}>
-              Show replies
+              {text.show}
             </Button>
             <Stack m="2rem">
               <TextareaAutosize
-                placeholder="say something nice"
+                placeholder={text.placeholder}
                 value={newReply}
                 onChange={(e) => setNewReply(e.target.value)}
               />
@@ -85,7 +98,7 @@ export default function Comment({
                     setNewReply('');
                   }}
                 >
-                  Add reply
+                  {text.add}
                 </Button>
               </Box>
             </Stack>
@@ -96,7 +109,7 @@ export default function Comment({
           <Stack direction="column">
             <Box alignItems="center">
               <Typography variant="h6" textAlign="center">
-                Replies:
+                {text.replies}
               </Typography>
             </Box>
             {replies.map((reply) => {

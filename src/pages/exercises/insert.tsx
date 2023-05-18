@@ -17,10 +17,11 @@ import {
 } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import useText from '@/services/site-properties/parsing';
+import BackButton from '@/components/Buttons/BackButton';
 
 const exerciseInitialState = {
   exerciseId: '00000000-0000-0000-0000-000000000000',
-  name: ' ',
+  name: '',
   description: '',
   exerciseTypes: [],
   selectedType: {},
@@ -50,54 +51,53 @@ function InsertExercise() {
             },
           }
         );
+        console.log(data);
         setExercise(data);
       }
     };
 
     getExercise();
-  }, []);
+  }, [router]);
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
 
     let formData = new FormData();
 
-    let querryString = `?selectedType.value=${exercise.selectedType.value}&selectedType.label=${exercise.selectedType.label}`
-    
-    formData.append("exerciseId", exercise.exerciseId);
-    formData.append("name", exercise.name);
-    formData.append("description", exercise.description);
-    formData.append("selectedType", exercise.selectedType);
+    let querryString = `?selectedType.value=${exercise.selectedType.value}&selectedType.label=${exercise.selectedType.label}`;
+
+    formData.append('exerciseId', exercise.exerciseId);
+    formData.append('name', exercise.name);
+    formData.append('description', exercise.description);
+    formData.append('selectedType', exercise.selectedType);
     let index = 0;
     debugger;
-    for(let mg of exercise.selectedMuscleGroups){
-      formData.append("selectedMuscleGroups", mg);
-      querryString += `&selectedMuscleGroups[${index}].value=${mg.value}`
-      querryString += `&selectedMuscleGroups[${index}].label=${mg.label}`
+    for (let mg of exercise.selectedMuscleGroups) {
+      formData.append('selectedMuscleGroups', mg);
+      querryString += `&selectedMuscleGroups[${index}].value=${mg.value}`;
+      querryString += `&selectedMuscleGroups[${index}].label=${mg.label}`;
       index++;
     }
-    formData.append("image", exercise.image);
-    
-    
+    formData.append('image', exercise.image);
 
     try {
       await axios({
-        method: "post",
+        method: 'post',
         url: `https://localhost:7132/Exercises/insertExercise${querryString}`,
         data: formData,
         headers: {
           Authorization: AuthHeader(),
-          "Content-Type": "multipart/form-data"
+          'Content-Type': 'multipart/form-data',
         },
       });
-      router.push("/exercises");
-    } catch (err){
-      console.log("treat errs")
+      router.push('/exercises');
+    } catch (err) {
+      console.log('treat errs');
     }
   };
 
   const text = {
-    name: useText('general.name.placeholder.text', locale),
+    name: useText('pages.admin.pending-exercises.name-exercise.text', locale),
     description: useText('general.description.placeholder.text', locale),
     typeOfExercise: useText(
       'pages.exercises.insert.type-of-exercises.text',
@@ -109,159 +109,179 @@ function InsertExercise() {
     ),
     image: useText('general.image.placeholder.text', locale),
     submit: useText('general.submit.text', locale),
+    title: useText('pages.exercises.insert.title.text', locale),
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          rowGap: '5px',
-        }}
-      >
-        <Typography variant={'h2'}>Insert Exercise</Typography>
+    <>
+      <BackButton />
+      <Container component="main" maxWidth="md">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            rowGap: '5px',
+          }}
+        >
+          <Typography variant={'h2'}>{text.title}</Typography>
 
-        <Box component="form" onSubmit={submitHandler} sx={{ mt: 3 }}>
-          <Grid
-            container
-            sx={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              rowGap: '12px',
-            }}
-          >
-            <Grid item xs={12}>
-              <TextField
-                value={exercise.name}
-                onChange={(e) =>
-                  setExercise({ ...exercise, name: e.target.value })
-                }
-                required
-                fullWidth
-                label={text.name}
-                id="name"
-                type="text"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                value={exercise.description}
-                onChange={(e) =>
-                  setExercise({ ...exercise, description: e.target.value })
-                }
-                multiline
-                rows={5}
-                label={text.description}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel
-                  sx={{ marginLeft: '14px' }}
-                  variant="standard"
-                  id="type-of-exercise"
-                >
-                  Type of exercise
-                </InputLabel>
-                <Select
-                  labelId="type-of-exercise"
-                  id="type-of-exercise"
-                  label={text.typeOfExercise}
-                  value={exercise.selectedType?.label || ''}
+          <Box component="form" onSubmit={submitHandler} sx={{ mt: 3 }}>
+            <Grid
+              container
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                rowGap: '12px',
+              }}
+            >
+              <Grid item xs={12}>
+                <TextField
+                  value={exercise.name}
                   onChange={(e) =>
-                    setExercise({
-                      ...exercise,
-                      selectedType: {
-                        label: e.target.value,
-                        value: exercise.exerciseTypes.find(
-                          (ex) => ex.label === e.target.value
-                        )?.value,
-                      },
-                    })
+                    setExercise((prevState) => ({
+                      ...prevState,
+                      name: e.target.value,
+                    }))
                   }
-                >
-                  {exercise.exerciseTypes.map((exerciseType) => (
-                    <MenuItem
-                      value={exerciseType.label}
-                      id={exerciseType.value}
-                    >
-                      {exerciseType.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel
-                  variant="standard"
-                  id="groups-of-muscles"
-                  sx={{ marginLeft: '14px' }}
-                >
-                  Groups of muscles
-                </InputLabel>
-                <Select
-                  labelId="groups-of-muscles"
-                  id="groups-of-muscles"
-                  label={text.groupsOfMuscles}
-                  multiple
-                  value={
-                    exercise.selectedMuscleGroups.map(
-                      (muscle) => muscle.label
-                    ) || []
+                  required
+                  fullWidth
+                  label={text.name}
+                  id="name"
+                  type="text"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  value={exercise.description}
+                  onChange={(e) =>
+                    setExercise((preVState) => ({
+                      ...preVState,
+                      description: e.target.value,
+                    }))
                   }
+                  multiline
+                  rows={5}
+                  label={text.description}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel
+                    sx={{ marginLeft: '14px' }}
+                    variant="standard"
+                    id="type-of-exercise"
+                  >
+                    {text.typeOfExercise}
+                  </InputLabel>
+                  <Select
+                    labelId="type-of-exercise"
+                    id="type-of-exercise"
+                    label={text.typeOfExercise}
+                    value={exercise.selectedType?.label || ''}
+                    onChange={(e) =>
+                      setExercise((prevState) => ({
+                        ...prevState,
+                        selectedType: {
+                          label: e.target.value,
+                          value: exercise.exerciseTypes.find(
+                            (ex) => ex.label === e.target.value
+                          )?.value,
+                        },
+                      }))
+                    }
+                  >
+                    {exercise.exerciseTypes.map((exerciseType) => (
+                      <MenuItem
+                        value={exerciseType.label}
+                        id={exerciseType.value}
+                      >
+                        {exerciseType.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel
+                    variant="standard"
+                    id="groups-of-muscles"
+                    sx={{ marginLeft: '14px' }}
+                  >
+                    {text.groupsOfMuscles}
+                  </InputLabel>
+                  <Select
+                    labelId="groups-of-muscles"
+                    id="groups-of-muscles"
+                    label={text.groupsOfMuscles}
+                    multiple
+                    value={
+                      exercise.selectedMuscleGroups?.map(
+                        (muscle) => muscle?.label
+                      ) || []
+                    }
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      const selectedMuscleGroups = value.map((label) => {
+                        const muscleGroup = exercise.muscleGroups.find(
+                          (muscle) => muscle.label === label
+                        );
+                        return {
+                          label,
+                          value: muscleGroup?.value ?? 0,
+                        };
+                      });
+                      setExercise((prevState) => ({
+                        ...prevState,
+                        selectedMuscleGroups,
+                      }));
+                    }}
+                  >
+                    {exercise.muscleGroups.map((muscleGroup) => (
+                      <MenuItem
+                        key={muscleGroup.value}
+                        value={muscleGroup.label}
+                      >
+                        {muscleGroup.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
                   onChange={(e) => {
-                    const { value } = e.target;
-                    const selectedMuscleGroups = value.map((label) => {
-                      const muscleGroup = exercise.muscleGroups.find(
-                        (muscle) => muscle.label === label
-                      );
-                      return {
-                        label,
-                        value: muscleGroup?.value ?? 0,
-                      };
-                    });
-                    setExercise({
-                      ...exercise,
-                      selectedMuscleGroups,
-                    });
+                    // @ts-ignore
+                    setExercise((prevState) => ({
+                      ...prevState,
+                      image: e.target.files[0],
+                    }));
                   }}
+                  placeholder={text.image}
+                  type="file"
+                />
+              </Grid>
+              <Stack spacing={6} direction={['column', 'row']}>
+                <Button
+                  sx={{
+                    backgroundColor: 'blue',
+                    color: 'white',
+                    width: 'full',
+                  }}
+                  onClick={submitHandler}
                 >
-                  {exercise.muscleGroups.map((muscleGroup) => (
-                    <MenuItem key={muscleGroup.value} value={muscleGroup.label}>
-                      {muscleGroup.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  {text.submit}
+                </Button>
+              </Stack>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                onChange={(e) => {
-                  // @ts-ignore
-                  setExercise({ ...exercise, image: e.target.files[0] });
-                }}
-                placeholder={text.image}
-                type="file"
-              />
-            </Grid>
-            <Stack spacing={6} direction={['column', 'row']}>
-              <Button
-                sx={{ backgroundColor: 'blue', color: 'white', width: 'full' }}
-                onClick={submitHandler}
-              >
-                {text.submit}
-              </Button>
-            </Stack>
-          </Grid>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </>
   );
 }
 

@@ -147,12 +147,27 @@ export const text: Text = {
     'pages.home.index.section.beginner.title': {
       value: 'Incepator',
     },
+    'navigation.layout.buttons.signin.text': {
+      value: 'Conectare',
+    },
+    'navigation.layout.buttons.register.text': {
+      value: 'Inregistrare',
+    },
     'pages.home.index.section.beginner.text': {
       value:
         'Ne ocupăm de toate nivelurile de experiență. Nu fi timid și vezi ce ai pierdut',
     },
     'pages.home.index.section.experienced.title': {
       value: 'Experimentati',
+    },
+    'components.comment.card.show.replies': {
+      value: 'Arata raspunsurile',
+    },
+    'components.comment.card.add.replies': {
+      value: 'Adauga raspuns',
+    },
+    'components.comment.card.replies': {
+      value: 'Raspunsuri:',
     },
     'pages.home.index.section.experienced.text': {
       value:
@@ -165,8 +180,41 @@ export const text: Text = {
       value:
         'Putem antrena orice nivel de varsta. Daca vrei sa ai un mod de viata mai sanatos, suna-ne azi sa afli mai multe',
     },
+    'navigation.layout.tabs.exercises.text': {
+      value: 'Exercitii',
+    },
+    'pages.splits.index.title.text': {
+      value: 'Programe:',
+    },
+    'pages.splits.index.button.add.text': {
+      value: 'Adauga antrenament nou:',
+    },
+    'components.splitcard.rating.text': {
+      value: 'Evaluare ',
+    },
+    'components.splitcard.workouts.text': {
+      value: 'Antrenamente: ',
+    },
+    'navigation.layout.tabs.splits.text': {
+      value: 'Programe',
+    },
+    'language.switch.title.text': {
+      value: 'Alege limba',
+    },
+    'general.back.text': {
+      value: 'Inapoi',
+    },
+    'language.romanian.text': {
+      value: 'Romana',
+    },
+    'pages.exercises.insert.title.text': {
+      value: 'Adauga exercitiu',
+    },
+    'language.english.text': {
+      value: 'Engleza',
+    },
     'navigation-layout.logout.button': {
-      value: 'Deconecteaza-te',
+      value: 'Deconectare',
     },
     'navigation-layout.profile.button': {
       value: 'Profil',
@@ -182,6 +230,24 @@ export const text: Text = {
     },
     'navigation-admin.users.text': {
       value: 'Utilizatori',
+    },
+    'pages.splits.split-id.creator.text': {
+      value: 'Autor: ',
+    },
+    'pages.splits.split-id.description.text': {
+      value: 'Descriere: ',
+    },
+    'pages.splits.split-id.comments.text': {
+      value: 'Comentarii: ',
+    },
+    'pages.splits.split-id.question.text': {
+      value: 'Ai vreo intrebare?',
+    },
+    'pages.splits.split-id.comment.add.text': {
+      value: 'Adauga comentariu',
+    },
+    'pages.splits.split-id.textarea.placeholder.text': {
+      value: 'spune ceva dragut',
     },
   },
   'en-US': {
@@ -227,17 +293,47 @@ export const text: Text = {
     'pages.admin.users.modal.content': {
       value: 'Are you sure you want to delete this user?',
     },
+    'general.back.text': {
+      value: 'Back',
+    },
     'pages.exercises.exercise.muscles': {
       value: 'Muscles Targeted',
     },
     'pages.exercises.exercise.modal.title': {
       value: 'Delete exercise',
     },
+    'pages.splits.split-id.creator.text': {
+      value: 'Creator: ',
+    },
+    'pages.splits.split-id.description.text': {
+      value: 'Description: ',
+    },
+    'pages.splits.split-id.comments.text': {
+      value: 'Comments: ',
+    },
+    'pages.splits.split-id.question.text': {
+      value: 'Do you have any question?',
+    },
+    'pages.splits.split-id.comment.add.text': {
+      value: 'Add comment',
+    },
+    'pages.splits.split-id.textarea.placeholder.text': {
+      value: 'say something nice',
+    },
     'pages.exercises.exercise.modal.content': {
       value: 'Are you sure you want to delete this exercise?',
     },
     'general.modal.text.cancel': {
       value: 'Cancel',
+    },
+    'components.comment.card.show.replies': {
+      value: 'Show replies',
+    },
+    'components.comment.card.add.replies': {
+      value: 'Add reply',
+    },
+    'components.comment.card.replies': {
+      value: 'Replies:',
     },
     'pages.exercises.index.title': {
       value: 'Exercises: ',
@@ -248,6 +344,33 @@ export const text: Text = {
     'general.view.text': {
       value: 'View',
     },
+    'pages.splits.index.title.text': {
+      value: 'Splits: ',
+    },
+    'pages.splits.index.button.add.text': {
+      value: 'Add new split:',
+    },
+    'components.splitcard.rating.text': {
+      value: 'Rating ',
+    },
+    'components.splitcard.workouts.text': {
+      value: 'Workouts:',
+    },
+    'language.switch.title.text': {
+      value: 'Select language',
+    },
+    'language.romanian.text': {
+      value: 'Romanian',
+    },
+    'language.english.text': {
+      value: 'English',
+    },
+    'navigation.layout.tabs.exercises.text': {
+      value: 'Exercises',
+    },
+    'navigation.layout.tabs.splits.text': {
+      value: 'Splits',
+    },
     'general.edit.text': {
       value: 'Edit',
     },
@@ -256,6 +379,9 @@ export const text: Text = {
     },
     'pages.exercises.insert.type-of-exercises.text': {
       value: 'Type of exercise',
+    },
+    'pages.exercises.insert.title.text': {
+      value: 'Insert Exercise',
     },
     'pages.exercises.insert.groups-of-muscles.text': {
       value: 'Groups of muscles',
@@ -279,6 +405,12 @@ export const text: Text = {
       value: 'Sign in',
     },
     'pages.register.index.title': {
+      value: 'Register',
+    },
+    'navigation.layout.buttons.signin.text': {
+      value: 'Sign in',
+    },
+    'navigation.layout.buttons.register.text': {
       value: 'Register',
     },
     'general.name.placeholder.text': {

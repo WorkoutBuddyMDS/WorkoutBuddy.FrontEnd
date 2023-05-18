@@ -55,7 +55,7 @@ const UsersPage = () => {
     roles: useText('pages.admin.users.table.roles', locale),
     actions: useText('pages.admin.users.table.actions', locale),
     makeAdmin: useText('pages.admin.users.tooltip.make-admin', locale),
-    deleteUser: useText('pages.admin.users.table.delete-user', locale),
+    deleteUser: useText('pages.admin.users.tooltip.delete-user', locale),
     deleteUserModal: useText('pages.admin.users.modal.title', locale),
     deleteModalContent: useText('pages.admin.users.modal.content', locale),
     cancel: useText('general.modal.text.cancel', locale),

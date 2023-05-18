@@ -22,11 +22,7 @@ import Link from 'next/link';
 import { accountActions } from '@/store/reducers/account';
 import { RootState } from '@/store';
 import LanguageSwitch from '@/components/LanguageSwitch/LanguageSwitch';
-
-const pages = [
-  <StyledLink href="/exercises">Exercises</StyledLink>,
-  <StyledLink href="/splits">Splits</StyledLink>,
-];
+import useText from '@/services/site-properties/parsing';
 
 const StyledButtonBox = styled(Box)`
   margin-left: 10px;
@@ -34,6 +30,7 @@ const StyledButtonBox = styled(Box)`
 
 function NavigationLayout({ children }: { children: React.ReactElement }) {
   const router = useRouter();
+  const { locale } = router;
   const dispatcher = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const accountState = useSelector((state: RootState) => state.account);
@@ -46,6 +43,20 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const text = {
+    exercisesTab: useText('navigation.layout.tabs.exercises.text', locale),
+    splitsTab: useText('navigation.layout.tabs.splits.text', locale),
+    signInBtn: useText('navigation.layout.buttons.signin.text', locale),
+    registerBtn: useText('navigation.layout.buttons.register.text', locale),
+    profileText: useText('navigation-layout.profile.button', locale),
+    adminText: useText('navigation-layout.admin.button', locale),
+    logoutText: useText('navigation-layout.logout.button', locale),
+  };
+
+  const pages = [
+    <StyledLink href="/exercises">{text.exercisesTab}</StyledLink>,
+    <StyledLink href="/splits">{text.splitsTab}</StyledLink>,
+  ];
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -75,19 +86,21 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
   };
 
   const settings = [
-    <Link href={`/user/edit`}>Profile</Link>,
+    <Link href={`/user/edit`}>{text.profileText}</Link>,
     <Button
       onClick={() => {
         dispatcher(accountActions.signOut());
         router.reload();
       }}
     >
-      Logout
+      {text.logoutText}
     </Button>,
   ];
 
   if (isAdmin) {
-    settings.unshift(<Link href={`/admin/pending-exercises`}>Admin</Link>);
+    settings.unshift(
+      <Link href={`/admin/pending-exercises`}>{text.adminText}</Link>
+    );
   }
 
   return (
@@ -179,7 +192,7 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
               ))}
             </Box>
 
-            <LanguageSwitch locale={router.locale} />
+            <LanguageSwitch />
 
             {isLoggedIn ? (
               <Box sx={{ flexGrow: 0 }}>
@@ -217,10 +230,10 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
             ) : (
               <StyledButtonBox>
                 <StyledBasicButton onClick={() => router.push('/login')}>
-                  Sign in
+                  {text.signInBtn}
                 </StyledBasicButton>
                 <StyledBasicButton onClick={() => router.push('/register')}>
-                  Register
+                  {text.registerBtn}
                 </StyledBasicButton>
               </StyledButtonBox>
             )}

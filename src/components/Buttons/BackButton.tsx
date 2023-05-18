@@ -1,14 +1,21 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { ArrowLeft } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useRouter as useNavigation } from 'next/navigation';
+import { useRouter } from 'next/router';
+import useText from '@/services/site-properties/parsing';
 
 const BackButton = (props: any) => {
-  const router = useRouter();
+  const navigation = useNavigation();
+  const { locale } = useRouter();
+
+  const text = {
+    backText: useText('general.back.text', locale),
+  };
   return (
-    <Button {...props} variant="text" onClick={router.back}>
+    <Button {...props} variant="text" onClick={navigation.back}>
       <ArrowLeft />
-      Back
+      {text.backText}
     </Button>
   );
 };

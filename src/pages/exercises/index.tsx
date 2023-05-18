@@ -42,6 +42,7 @@ const ExercisesList = () => {
     exercisesTitle: useText('pages.exercises.index.title', locale),
     addText: useText('pages.exercises.index.button.add', locale),
     view: useText('general.view.text', locale),
+    delete: useText('general.delete.text', locale),
     edit: useText('general.edit.text', locale),
     confirmDelete: useText('pages.exercises.index.card.confirm', locale),
     typeExercises: useText(

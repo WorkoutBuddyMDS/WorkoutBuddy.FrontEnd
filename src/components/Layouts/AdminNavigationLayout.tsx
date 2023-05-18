@@ -16,6 +16,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { AccountBox, FitnessCenter, Groups } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import useText from '@/services/site-properties/parsing';
 
 const drawerWidth: number = 240;
 
@@ -70,9 +72,18 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function AdminNavigationLayout({ children }: { children: React.ReactElement }) {
+  const { locale } = useRouter();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  const text = {
+    pendingExercisesText: useText(
+      'navigation-admin.pending-exercises.text',
+      locale
+    ),
+    users: useText('navigation-admin.users.text', locale),
   };
 
   const mainListItems = (
@@ -82,7 +93,7 @@ function AdminNavigationLayout({ children }: { children: React.ReactElement }) {
           <ListItemIcon>
             <FitnessCenter />
           </ListItemIcon>
-          {open && <ListItemText primary="Pending Exercises" />}
+          {open && <ListItemText primary={text.pendingExercisesText} />}
         </Link>
       </ListItemButton>
       <ListItemButton>
@@ -90,7 +101,7 @@ function AdminNavigationLayout({ children }: { children: React.ReactElement }) {
           <ListItemIcon>
             <Groups />
           </ListItemIcon>
-          {open && <ListItemText primary="Users" />}
+          {open && <ListItemText primary={text.users} />}
         </Link>
       </ListItemButton>
     </React.Fragment>
