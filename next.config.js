@@ -3,22 +3,18 @@ module.exports = {
   i18n: {
     locales: ['ro-RO', 'en-US'],
     defaultLocale: 'ro-RO',
+    localeDetection: false,
     domains: [
       {
-        domain: process.env.REACT_APP_EN_DOMAIN,
+        domain: 'www.workoutbuddy.com:3000',
         defaultLocale: 'en-US',
-        http: process.env.NODE_ENV === 'development',
+        http: true,
       },
       {
-        domain: process.env.REACT_APP_RO_DOMAIN,
+        domain: 'www.workoutbuddy.ro:3000',
         defaultLocale: 'ro-RO',
-        http: process.env.NODE_ENV === 'development',
+        http: true,
       },
     ],
-  },
-  env: {
-    REACT_APP_PROTOCOL: process.env.REACT_APP_PROTOCOL,
-    REACT_APP_EN_DOMAIN: process.env.REACT_APP_EN_DOMAIN,
-    REACT_APP_RO_DOMAIN: process.env.REACT_APP_RO_DOMAIN,
   },
 };
