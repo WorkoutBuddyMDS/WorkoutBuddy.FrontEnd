@@ -9,10 +9,10 @@ type Text = {
 export const text: Text = {
   'ro-RO': {
     'pages.admin.pending-exercises.no-exercises': {
-      value: 'Nu există exerciții de aprobat',
+      value: 'Nu există exerciții de aprobat!',
     },
     'pages.admin.pending-exercises.error': {
-      value: '500 - A avut loc o eroare din partea serverului',
+      value: '500 - A avut loc o eroare din partea serverului!',
     },
     'general.accept.text': {
       value: 'Acceptă',
@@ -39,7 +39,7 @@ export const text: Text = {
       value: 'Asignează admin',
     },
     'pages.admin.users.tooltip.delete-user': {
-      value: 'Sterge utilizator',
+      value: 'Șterge utilizator',
     },
     'pages.admin.users.modal.title': {
       value: 'Șterge utilizator',
@@ -78,7 +78,7 @@ export const text: Text = {
       value: 'Tipul de exercițiu',
     },
     'pages.admin.pending-exercises.name-exercise.text': {
-      value: 'Nume exercitiu',
+      value: 'Nume exercițiu',
     },
     'pages.exercises.insert.groups-of-muscles.text': {
       value: 'Grupe musculare',
@@ -99,7 +99,7 @@ export const text: Text = {
       value: 'Nu ai cont? Hai sa creăm unul',
     },
     'pages.register.index.title': {
-      value: 'Inregistreaza-te',
+      value: 'Înregistrează-te',
     },
     'general.name.placeholder.text': {
       value: 'Prenume',
@@ -111,83 +111,83 @@ export const text: Text = {
       value: 'Parola',
     },
     'general.date-of-birth.placeholder.text': {
-      value: 'Data nasterii',
+      value: 'Data nașterii',
     },
     'general.weight.placeholder.text': {
       value: 'Greutate',
     },
     'pages.register.index.button.signup': {
-      value: 'Creeaza cont',
+      value: 'Creează cont',
     },
     'pages.register.index.link.text': {
-      value: 'Ai deja cont? Conecteaza-te',
+      value: 'Ai deja cont? Conectează-te',
     },
     'general.phone.placeholder.text': {
-      value: 'Numar de telefon',
+      value: 'Număr de telefon',
     },
     'general.save.text': {
-      value: 'Salveaza',
+      value: 'Salvează',
     },
     'pages.home.index.title.text': {
-      value: 'Antreneaza-ti corpul',
+      value: 'Antrenează-ți corpul',
     },
     'general.description.placeholder.text': {
       value: 'Descriere',
     },
     'pages.home.index.subtitle.text': {
       value:
-        'Transforma-ti corpul si mintea cu cel mai bun insotitor de fitness',
+        'Transformă-ți corpul și mintea cu cel mai bun însoțitor de fitness',
     },
     'pages.home.index.welcome.text': {
       value: 'Bun venit, ',
     },
     'pages.home.index.button.started': {
-      value: 'Incepe acum',
+      value: 'Începe acum',
     },
     'pages.home.index.section.beginner.title': {
-      value: 'Incepator',
+      value: 'Începător',
     },
     'navigation.layout.buttons.signin.text': {
       value: 'Conectare',
     },
     'navigation.layout.buttons.register.text': {
-      value: 'Inregistrare',
+      value: 'Înregistrare',
     },
     'pages.home.index.section.beginner.text': {
       value:
         'Ne ocupăm de toate nivelurile de experiență. Nu fi timid și vezi ce ai pierdut',
     },
     'pages.home.index.section.experienced.title': {
-      value: 'Experimentati',
+      value: 'Experimentați',
     },
     'components.comment.card.show.replies': {
       value: 'Arata raspunsurile',
     },
     'components.comment.card.add.replies': {
-      value: 'Adauga raspuns',
+      value: 'Adaugă răspuns',
     },
     'components.comment.card.replies': {
-      value: 'Raspunsuri:',
+      value: 'Răspunsuri:',
     },
     'pages.home.index.section.experienced.text': {
       value:
-        'Avem mai multe antrenament intense pentru antrenorul personal din tine',
+        'Avem mai multe antrenamente intense pentru antrenorul personal din tine',
     },
     'pages.home.index.section.allages.title': {
-      value: 'Toate varstele',
+      value: 'Toate vârstele',
     },
     'pages.home.index.section.allages.text': {
       value:
-        'Putem antrena orice nivel de varsta. Daca vrei sa ai un mod de viata mai sanatos, suna-ne azi sa afli mai multe',
+        'Putem antrena orice nivel de vârstă. Dacă vrei să ai un mod de viață mai sănătos, sună-ne azi să afli mai multe',
     },
     'navigation.layout.tabs.exercises.text': {
-      value: 'Exercitii',
+      value: 'Exerciții',
     },
     'pages.splits.index.title.text': {
       value: 'Programe:',
     },
     'pages.splits.index.button.add.text': {
-      value: 'Adauga antrenament nou:',
+      value: 'Adaugă antrenament nou:',
     },
     'components.splitcard.rating.text': {
       value: 'Evaluare ',
@@ -202,16 +202,16 @@ export const text: Text = {
       value: 'Alege limba',
     },
     'general.back.text': {
-      value: 'Inapoi',
+      value: 'Înapoi',
     },
     'language.romanian.text': {
-      value: 'Romana',
+      value: 'Română',
     },
     'pages.exercises.insert.title.text': {
-      value: 'Adauga exercitiu',
+      value: 'Adaugă exercițiu',
     },
     'language.english.text': {
-      value: 'Engleza',
+      value: 'Engleză',
     },
     'navigation-layout.logout.button': {
       value: 'Deconectare',
@@ -220,13 +220,13 @@ export const text: Text = {
       value: 'Profil',
     },
     'pages.login.index.submit.text': {
-      value: 'Conecteaza-te',
+      value: 'Conectează-te',
     },
     'navigation-layout.admin.button': {
       value: 'Admin',
     },
     'navigation-admin.pending-exercises.text': {
-      value: 'Exercitii in asteptare',
+      value: 'Exerciții in aşteptare',
     },
     'navigation-admin.users.text': {
       value: 'Utilizatori',
@@ -241,13 +241,13 @@ export const text: Text = {
       value: 'Comentarii: ',
     },
     'pages.splits.split-id.question.text': {
-      value: 'Ai vreo intrebare?',
+      value: 'Ai vreo întrebare?',
     },
     'pages.splits.split-id.comment.add.text': {
-      value: 'Adauga comentariu',
+      value: 'Adaugă comentariu',
     },
     'pages.splits.split-id.textarea.placeholder.text': {
-      value: 'spune ceva dragut',
+      value: 'Spune ceva drăguț',
     },
   },
   'en-US': {
