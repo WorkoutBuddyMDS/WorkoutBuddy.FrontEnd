@@ -8,10 +8,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Fab from '@mui/material/Fab';
 import { useRouter } from 'next/router';
-import RoFlagIcon from '@/components/Icons/ROFlagIcon';
-import UkFlagIcon from '@/components/Icons/UKFlagIcon';
-import useText from '@/services/site-properties/parsing';
-import { Url } from 'url';
+import RoFlagIcon from '../..//components/Icons/ROFlagIcon';
+import UkFlagIcon from '../../components/Icons/UKFlagIcon';
+import useText from '../../services/site-properties/parsing';
 
 export default function LanguageSwitch() {
   const router = useRouter();
@@ -36,8 +35,8 @@ export default function LanguageSwitch() {
   const handleSave = () => {
     location.replace(
       language === 'uk'
-        ? 'http://com.localhost:3000'
-        : 'http://ro.localhost:3000'
+        ? 'http://www.workoutbuddy.com:3000'
+        : 'http://www.workoutbuddy.ro:3000'
     );
 
     setOpen(false);

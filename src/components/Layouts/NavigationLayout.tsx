@@ -12,23 +12,23 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { StyledBasicButton, StyledLink } from '@/styles/styled-components';
+import { StyledBasicButton, StyledLink } from '../../styles/styled-components';
 import { styled } from '@mui/system';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FitnessCenter } from '@mui/icons-material';
 import Link from 'next/link';
-import { accountActions } from '@/store/reducers/account';
-import { RootState } from '@/store';
-import LanguageSwitch from '@/components/LanguageSwitch/LanguageSwitch';
-import useText from '@/services/site-properties/parsing';
+import { accountActions } from '../../store/reducers/account';
+import { RootState } from '../../store';
+import LanguageSwitch from '../../components/LanguageSwitch/LanguageSwitch';
+import useText from '../../services/site-properties/parsing';
 
 const StyledButtonBox = styled(Box)`
   margin-left: 10px;
 `;
 
-function NavigationLayout({ children }: { children: React.ReactElement }) {
+const NavigationLayout = React.forwardRef((props: any, ref) => {
   const router = useRouter();
   const { locale } = router;
   const dispatcher = useDispatch();
@@ -105,143 +105,148 @@ function NavigationLayout({ children }: { children: React.ReactElement }) {
 
   return (
     <>
-      <AppBar position="static">
-        <Container maxWidth={false}>
-          <Toolbar disableGutters>
-            <FitnessCenter
-              sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
-            />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.15rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              Workout Buddy
-            </Typography>
-
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
+      <div className="navigation-layout" ref={ref}>
+        <AppBar position="static" data-testid="navigation-layout">
+          <Container maxWidth={false}>
+            <Toolbar disableGutters>
+              <FitnessCenter
+                sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+              />
+              <Typography
+                variant="h5"
+                noWrap
+                component="a"
+                href="/"
                 sx={{
-                  display: { xs: 'block', md: 'none' },
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.15rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
                 }}
               >
-                {pages.map((page, index) => (
-                  <Typography textAlign="center" key={index}>
-                    {page}
-                  </Typography>
-                ))}
-              </Menu>
-            </Box>
-            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              Workout Buddy
-            </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map((page) => (
-                <Typography sx={{ my: 2, color: 'white', display: 'block' }}>
-                  {page}
-                </Typography>
-              ))}
-            </Box>
+                Workout Buddy
+              </Typography>
 
-            <LanguageSwitch />
-
-            {isLoggedIn ? (
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar>
-                      {username.replace(/[a-z]/g, '') ||
-                        username.toUpperCase()[0]}
-                    </Avatar>
-                  </IconButton>
-                </Tooltip>
+              <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
                 <Menu
-                  sx={{ mt: '45px' }}
                   id="menu-appbar"
-                  anchorEl={anchorElUser}
+                  anchorEl={anchorElNav}
                   anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                    vertical: 'bottom',
+                    horizontal: 'left',
                   }}
                   keepMounted
                   transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'right',
+                    horizontal: 'left',
                   }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: 'block', md: 'none' },
+                  }}
                 >
-                  {settings.map((setting) => (
-                    <MenuItem onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
+                  {pages.map((page, index) => (
+                    <Typography textAlign="center" key={index}>
+                      {page}
+                    </Typography>
                   ))}
                 </Menu>
               </Box>
-            ) : (
-              <StyledButtonBox>
-                <StyledBasicButton onClick={() => router.push('/login')}>
-                  {text.signInBtn}
-                </StyledBasicButton>
-                <StyledBasicButton onClick={() => router.push('/register')}>
-                  {text.registerBtn}
-                </StyledBasicButton>
-              </StyledButtonBox>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
-      {children}
+              <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+              <Typography
+                variant="h5"
+                noWrap
+                component="a"
+                href=""
+                sx={{
+                  mr: 2,
+                  display: { xs: 'flex', md: 'none' },
+                  flexGrow: 1,
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                Workout Buddy
+              </Typography>
+              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                {pages.map((page, index) => (
+                  <Typography
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    key={index}
+                  >
+                    {page}
+                  </Typography>
+                ))}
+              </Box>
+
+              <LanguageSwitch />
+
+              {isLoggedIn ? (
+                <Box sx={{ flexGrow: 0 }}>
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar>
+                        {username.replace(/[a-z]/g, '') ||
+                          username.toUpperCase()[0]}
+                      </Avatar>
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: '45px' }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    {settings.map((setting) => (
+                      <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+              ) : (
+                <StyledButtonBox>
+                  <StyledBasicButton onClick={() => router.push('/login')}>
+                    {text.signInBtn}
+                  </StyledBasicButton>
+                  <StyledBasicButton onClick={() => router.push('/register')}>
+                    {text.registerBtn}
+                  </StyledBasicButton>
+                </StyledButtonBox>
+              )}
+            </Toolbar>
+          </Container>
+        </AppBar>
+        {props.children}
+      </div>
     </>
   );
-}
+});
 export default NavigationLayout;
