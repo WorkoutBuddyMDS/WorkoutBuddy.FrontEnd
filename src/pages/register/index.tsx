@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
 import {
-  Alert,
   Avatar,
   Box,
   Button,
@@ -17,7 +16,7 @@ import {
   VisibilityOff,
 } from '@mui/icons-material';
 import Copyright from '@/components/Copyright/Copyright';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { accountActions } from '@/store/reducers/account';
 import axios from 'axios';
 import { StyledLink } from '@/styles/styled-components';
@@ -27,6 +26,7 @@ import dayjs from 'dayjs';
 import BasicAlert from '@/components/Alerts/BasicAlert';
 import { BasicLoader } from '@/components/Loader/BasicLoader';
 import useText from '@/services/site-properties/parsing';
+import { RootState } from '@/store';
 
 const registerModelInitialState = {
   name: '',
@@ -39,7 +39,7 @@ const registerModelInitialState = {
 
 const Register = () => {
   const router = useRouter();
-  const { locale } = router;
+  const locale = useSelector((state: RootState) => state.language.language);
   const dispatcher = useDispatch();
   const [registerModel, setRegisterModel] = useState(registerModelInitialState);
   const [loading, setLoading] = useState(false);
@@ -58,7 +58,8 @@ const Register = () => {
       dispatcher(accountActions.register(res.data));
 
       await router.push('/');
-    } catch ({ response }) {
+    } catch (data: any) {
+      const { response } = data;
       setError(
         response.data[0].propertyName + ': ' + response.data[0].errorMessage
       );

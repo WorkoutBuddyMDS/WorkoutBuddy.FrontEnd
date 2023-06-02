@@ -1,18 +1,12 @@
 import { ISplit } from '@/pages/splits';
 import AuthHeader from '@/utils/authrorizationHeader';
-import {
-  Badge,
-  Box,
-  Button,
-  Container,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Badge, Box, Button, Link, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 interface ISplitCard {
   split: ISplit;
@@ -20,7 +14,7 @@ interface ISplitCard {
 
 export default function SplitCard({ split }: ISplitCard) {
   const router = useRouter();
-  const { locale } = router;
+  const locale = useSelector((state: RootState) => state.language.language);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -29,10 +23,6 @@ export default function SplitCard({ split }: ISplitCard) {
       setIsAdmin(roles.includes('Admin'));
     }
   }, []);
-
-  const viewHandler = (id: string) => {
-    router.push(`/splits/${id}`);
-  };
 
   const editHandler = (id: string) => {
     router.push(`/splits/insert-split?id=${id}`);
@@ -48,7 +38,9 @@ export default function SplitCard({ split }: ISplitCard) {
             Authorization: AuthHeader(),
           },
         });
-      } catch (err) {}
+      } catch (err) {
+        console.log('Eroare');
+      }
     }
   };
 
@@ -164,7 +156,7 @@ export default function SplitCard({ split }: ISplitCard) {
                     boxShadow:
                       '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)',
                   }}
-                  onClick={(e) => editHandler(split.splitId)}
+                  onClick={() => editHandler(split.splitId)}
                 >
                   {text.edit}
                 </Button>
@@ -176,7 +168,7 @@ export default function SplitCard({ split }: ISplitCard) {
                     boxShadow:
                       '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)',
                   }}
-                  onClick={(e) => deleteHandler(split.splitId)}
+                  onClick={() => deleteHandler(split.splitId)}
                 >
                   {text.delete}
                 </Button>

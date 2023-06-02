@@ -4,16 +4,15 @@ import AdminNavigationLayout from '@/components/Layouts/AdminNavigationLayout';
 import axios from 'axios';
 import AuthHeader from '@/utils/authrorizationHeader';
 import { useRouter as useNavigation } from 'next/navigation';
-import { useRouter } from 'next/router';
-import { BasicLoader } from '@/components/Loader/BasicLoader';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 function PendingExercises() {
-  const [handlerResult, setHandlerResult] = useState(null);
   const [exercises, setExercises] = useState([]);
   const [error, setError] = useState('');
   const router = useNavigation();
-  const { locale } = useRouter();
+  const locale = useSelector((state: RootState) => state.language.language);
   const text = {
     noExericse: useText('pages.admin.pending-exercises.no-exercises', locale),
     error: useText('pages.admin.pending-exercises.error', locale),
@@ -50,21 +49,12 @@ function PendingExercises() {
         console.log(result);
         const data = result.data;
         setExercises(data);
-      } catch (error) {
-        console.log(error);
-        return {
-          props: {
-            error: error.message,
-          },
-        };
+      } catch (error: any) {
+        setError(error);
       }
     };
     getExercises();
   }, []);
-
-  function actionHandler(result: any) {
-    setHandlerResult(result);
-  }
 
   return (
     <>
@@ -72,13 +62,8 @@ function PendingExercises() {
         <div className="body">
           {exercises.length > 0 ? (
             <ul className="pendingCards">
-              {exercises.map((ex) => (
-                <ExerciseCard
-                  text={text}
-                  key={ex.id}
-                  exercise={ex}
-                  handler={actionHandler}
-                />
+              {exercises.map((ex: any) => (
+                <ExerciseCard text={text} key={ex.id} exercise={ex} />
               ))}
             </ul>
           ) : (

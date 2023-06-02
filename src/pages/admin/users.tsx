@@ -23,6 +23,9 @@ import AdminNavigationLayout from '@/components/Layouts/AdminNavigationLayout';
 import { useRouter as useNavigation } from 'next/navigation';
 import { useRouter } from 'next/router';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { BasicLoader } from '@/components/Loader/BasicLoader';
 
 const users = [
   {
@@ -43,10 +46,10 @@ const users = [
 
 const UsersPage = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useNavigation();
-  const { locale } = useRouter();
+  const locale = useSelector((state: RootState) => state.language.language);
 
   const text = {
     firstName: useText('pages.admin.users.table.first-name', locale),
@@ -92,6 +95,7 @@ const UsersPage = () => {
 
   return (
     <>
+      {loading && <BasicLoader open={loading} />}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -114,7 +118,7 @@ const UsersPage = () => {
                   <Tooltip title={text.makeAdmin}>
                     <IconButton
                       aria-label="make admin"
-                      onClick={() => handleMakeAdminClick(user.id)}
+                      onClick={() => handleMakeAdminClick(user.id.toString(10))}
                     >
                       <SupervisorAccountIcon />
                     </IconButton>
@@ -122,7 +126,7 @@ const UsersPage = () => {
                   <Tooltip title={text.deleteUser}>
                     <IconButton
                       aria-label="delete user"
-                      onClick={() => handleDeleteClick(user.id)}
+                      onClick={() => handleDeleteClick(user.id.toString(10))}
                     >
                       <DeleteIcon />
                     </IconButton>

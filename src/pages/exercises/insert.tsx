@@ -18,6 +18,8 @@ import {
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import useText from '@/services/site-properties/parsing';
 import BackButton from '@/components/Buttons/BackButton';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const exerciseInitialState = {
   exerciseId: '00000000-0000-0000-0000-000000000000',
@@ -32,9 +34,9 @@ const exerciseInitialState = {
 
 function InsertExercise() {
   const router = useRouter();
-  const [exercise, setExercise] = useState(exerciseInitialState);
+  const [exercise, setExercise] = useState<any>(exerciseInitialState);
 
-  const { locale } = useRouter();
+  const locale = useSelector((state: RootState) => state.language.language);
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params?.get('id');
@@ -71,7 +73,6 @@ function InsertExercise() {
     formData.append('description', exercise.description);
     formData.append('selectedType', exercise.selectedType);
     let index = 0;
-    debugger;
     for (let mg of exercise.selectedMuscleGroups) {
       formData.append('selectedMuscleGroups', mg);
       querryString += `&selectedMuscleGroups[${index}].value=${mg.value}`;
@@ -140,7 +141,7 @@ function InsertExercise() {
                 <TextField
                   value={exercise.name}
                   onChange={(e) =>
-                    setExercise((prevState) => ({
+                    setExercise((prevState: typeof exercise) => ({
                       ...prevState,
                       name: e.target.value,
                     }))
@@ -156,7 +157,7 @@ function InsertExercise() {
                 <TextField
                   value={exercise.description}
                   onChange={(e) =>
-                    setExercise((preVState) => ({
+                    setExercise((preVState: typeof exercise) => ({
                       ...preVState,
                       description: e.target.value,
                     }))
@@ -182,25 +183,31 @@ function InsertExercise() {
                     label={text.typeOfExercise}
                     value={exercise.selectedType?.label || ''}
                     onChange={(e) =>
-                      setExercise((prevState) => ({
+                      setExercise((prevState: typeof exercise) => ({
                         ...prevState,
                         selectedType: {
                           label: e.target.value,
                           value: exercise.exerciseTypes.find(
-                            (ex) => ex.label === e.target.value
+                            (ex: any) => ex.label === e.target.value
                           )?.value,
                         },
                       }))
                     }
                   >
-                    {exercise.exerciseTypes.map((exerciseType) => (
-                      <MenuItem
-                        value={exerciseType.label}
-                        id={exerciseType.value}
-                      >
-                        {exerciseType.label}
-                      </MenuItem>
-                    ))}
+                    {exercise.exerciseTypes.map(
+                      (
+                        exerciseType: { label: string; value: string },
+                        index: number
+                      ) => (
+                        <MenuItem
+                          key={index}
+                          value={exerciseType.label}
+                          id={exerciseType.value}
+                        >
+                          {exerciseType.label}
+                        </MenuItem>
+                      )
+                    )}
                   </Select>
                 </FormControl>
               </Grid>
@@ -220,41 +227,46 @@ function InsertExercise() {
                     multiple
                     value={
                       exercise.selectedMuscleGroups?.map(
-                        (muscle) => muscle?.label
+                        (muscle: { label: string }) => muscle?.label
                       ) || []
                     }
                     onChange={(e) => {
                       const { value } = e.target;
-                      const selectedMuscleGroups = value.map((label) => {
-                        const muscleGroup = exercise.muscleGroups.find(
-                          (muscle) => muscle.label === label
-                        );
-                        return {
-                          label,
-                          value: muscleGroup?.value ?? 0,
-                        };
-                      });
-                      setExercise((prevState) => ({
+                      const selectedMuscleGroups = value.map(
+                        (label: string) => {
+                          const muscleGroup = exercise.muscleGroups.find(
+                            (muscle: { label: string }) =>
+                              muscle.label === label
+                          );
+                          return {
+                            label,
+                            value: muscleGroup?.value ?? 0,
+                          };
+                        }
+                      );
+                      setExercise((prevState: typeof exercise) => ({
                         ...prevState,
                         selectedMuscleGroups,
                       }));
                     }}
                   >
-                    {exercise.muscleGroups.map((muscleGroup) => (
-                      <MenuItem
-                        key={muscleGroup.value}
-                        value={muscleGroup.label}
-                      >
-                        {muscleGroup.label}
-                      </MenuItem>
-                    ))}
+                    {exercise.muscleGroups.map(
+                      (muscleGroup: { label: string; value: string }) => (
+                        <MenuItem
+                          key={muscleGroup.value}
+                          value={muscleGroup.label}
+                        >
+                          {muscleGroup.label}
+                        </MenuItem>
+                      )
+                    )}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  onChange={(e) => {
+                  onChange={(e: any) => {
                     // @ts-ignore
                     setExercise((prevState) => ({
                       ...prevState,

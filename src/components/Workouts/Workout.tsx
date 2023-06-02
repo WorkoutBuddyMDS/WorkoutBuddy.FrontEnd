@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from "react";
-import Select from "react-select";
-import axios from "axios";
-import AuthHeader from "@/utils/authrorizationHeader";
-import { Box, Button, FormControl, FormLabel, Input, Stack, Typography } from "@mui/material";
+import React, { useState } from 'react';
+import Select from 'react-select';
+import axios from 'axios';
+import AuthHeader from '@/utils/authrorizationHeader';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+  Typography,
+} from '@mui/material';
 
-const Workout = (props) => {
+const Workout = (props: any) => {
   const [exercises, setExercises] = useState([]);
 
-  const muscleGroupsChangeHandler = async (e) => {
-    let queryString = "?";
+  const muscleGroupsChangeHandler = async (e: any) => {
+    let queryString = '?';
     let indexOfMuscles = 0;
 
     for (let elem of e) {
@@ -16,7 +24,7 @@ const Workout = (props) => {
       indexOfMuscles++;
     }
     const { data } = await axios({
-      method: "get",
+      method: 'get',
       url: `https://localhost:7132/Exercises/getExercisesByMuscleGroups${queryString}`,
       headers: {
         Authorization: AuthHeader(),
@@ -32,7 +40,7 @@ const Workout = (props) => {
     props.setSplit({ ...props.split, workouts });
   };
 
-  const changeNameHandler = (e) => {
+  const changeNameHandler = (e: any) => {
     const workouts = props.split.workouts;
     workouts[props.index] = {
       ...props.split.workouts[props.index],
@@ -41,7 +49,7 @@ const Workout = (props) => {
     props.setSplit({ ...props.split, workouts });
   };
 
-  const changeExercisesHandler = (e) => {
+  const changeExercisesHandler = (e: any) => {
     const workouts = props.split.workouts;
     workouts[props.index] = {
       ...props.split.workouts[props.index],
@@ -50,7 +58,7 @@ const Workout = (props) => {
     props.setSplit({ ...props.split, workouts });
   };
 
-  const deleteWorkout = (e) => {
+  const deleteWorkout = () => {
     const workouts = props.split.workouts;
     workouts[props.index] = {
       ...props.split.workouts[props.index],
@@ -60,19 +68,12 @@ const Workout = (props) => {
   };
 
   return (
-    <Stack
-      spacing={4}
-      p={6}
-      my={12}
-      border="dashed"
-    >
+    <Stack spacing={4} p={6} my={12} border="dashed">
       <Box display="flex" justifyContent="space-between">
-        <Typography lineHeight={1.1} fontSize={{ base: "lg", sm: "md" }}>
+        <Typography lineHeight={1.1} fontSize={{ base: 'lg', sm: 'md' }}>
           New workout
         </Typography>
-        <Button onClick={deleteWorkout}>
-          delete
-        </Button>
+        <Button onClick={deleteWorkout}>delete</Button>
       </Box>
 
       <FormControl>

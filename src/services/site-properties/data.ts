@@ -210,6 +210,69 @@ export const text: Text = {
     'pages.exercises.insert.title.text': {
       value: 'Adaugă exercițiu',
     },
+    'pages.calorie-calculator.title.header': {
+      value: 'Calculator de calorii',
+    },
+    'pages.calorie-calculator.title.text': {
+      value:
+        'Insereaza propriul tel si detaliile si acest calculator iti va spune de cate calorii ai nevoie pe zi pentru a ajunge cat mai repede posibil la telul tau.',
+    },
+    'pages.calorie-calculator.recommendation.text': {
+      value: 'Numarul de calorii pe care trebuie sa le consumi este:',
+    },
+    'pages.calorie.calculator.gender.text': {
+      value: 'Sex',
+    },
+    'pages.calorie.calculator.gender.male': {
+      value: 'Barbat',
+    },
+    'pages.calorie.calculator.gender.female': {
+      value: 'Femeie',
+    },
+    'pages.calorie.calculator.age.text': {
+      value: 'Varsta',
+    },
+    'pages.calorie.calculator.somatic.text': {
+      value: 'Tip somatic',
+    },
+    'pages.calorie.calculator.somatic.type1': {
+      value: 'Ectomorf',
+    },
+    'pages.calorie.calculator.somatic.type2': {
+      value: 'Mezomorf',
+    },
+    'pages.calorie.calculator.somatic.type3': {
+      value: 'Endomorf',
+    },
+    'pages.calorie.calculator.objective.text': {
+      value: 'Obiectiv',
+    },
+    'pages.calorie.calculator.objective.option1': {
+      value: 'Scadere in greutate',
+    },
+    'pages.calorie.calculator.objective.option2': {
+      value: 'Mentinerea masei corporale',
+    },
+    'pages.calorie.calculator.objective.option3': {
+      value: 'Crestere in masa',
+    },
+    'pages.calorie.calculator.objective.q1': {
+      value:
+        'Pe o scara de la 1 la 10, cat de repede iti doresti sa iti atingi scopul?',
+    },
+    'pages.calorie.calculator.objective.q2': {
+      value:
+        'Pe o scara de la 1 la 10, cat de activ esti in viata de zi cu zi?',
+    },
+    'pages.calorie.calculator.objective.q3': {
+      value: 'Faci vreun tip de antrenament/exercitiu?',
+    },
+    'pages.calorie.calculator.objective.q4': {
+      value: 'Pe o scara de la 1 la 5, cat de intens te antrenezi?',
+    },
+    'pages.calorie.calculator.calculate.text': {
+      value: 'Calculeaza',
+    },
     'language.english.text': {
       value: 'Engleză',
     },
@@ -218,6 +281,21 @@ export const text: Text = {
     },
     'navigation-layout.profile.button': {
       value: 'Profil',
+    },
+    'pages.splits.insert.title.text': {
+      value: 'Adauga sesiune de antrenamente',
+    },
+    'pages.splits.insert.name.text': {
+      value: 'Nume',
+    },
+    'pages.splits.insert.description.text': {
+      value: 'Descriere',
+    },
+    'pages.splits.insert.button.add-workout': {
+      value: 'Adauga nou antrenament',
+    },
+    'pages.splits.insert.private.text': {
+      value: 'Este privat?',
     },
     'pages.login.index.submit.text': {
       value: 'Conectează-te',
@@ -380,6 +458,21 @@ export const text: Text = {
     'pages.exercises.insert.type-of-exercises.text': {
       value: 'Type of exercise',
     },
+    'pages.splits.insert.title.text': {
+      value: 'Insert Split',
+    },
+    'pages.splits.insert.name.text': {
+      value: 'Name',
+    },
+    'pages.splits.insert.description.text': {
+      value: 'Description',
+    },
+    'pages.splits.insert.button.add-workout': {
+      value: 'Add new workout',
+    },
+    'pages.splits.insert.private.text': {
+      value: 'Is private?',
+    },
     'pages.exercises.insert.title.text': {
       value: 'Insert Exercise',
     },
@@ -400,6 +493,68 @@ export const text: Text = {
     },
     'pages.login.index.no-account.text': {
       value: "Don't have an account? Let's get started",
+    },
+    'pages.calorie-calculator.title.header': {
+      value: 'Calories calculator',
+    },
+    'pages.calorie-calculator.title.text': {
+      value:
+        'Input your goal and your details and this calculator will tell you how many calories you should eat per day to achieve your goal as fast as possible',
+    },
+    'pages.calorie-calculator.recomandation.text': {
+      value: 'Your calories intake should be:',
+    },
+    'pages.calorie.calculator.gender.text': {
+      value: 'Gender',
+    },
+    'pages.calorie.calculator.gender.male': {
+      value: 'Male',
+    },
+    'pages.calorie.calculator.gender.female': {
+      value: 'Female',
+    },
+    'pages.calorie.calculator.age.text': {
+      value: 'Age',
+    },
+    'pages.calorie.calculator.somatic.text': {
+      value: 'Somatic type',
+    },
+    'pages.calorie.calculator.somatic.type1': {
+      value: 'Ectomorf',
+    },
+    'pages.calorie.calculator.somatic.type2': {
+      value: 'Mezomorf',
+    },
+    'pages.calorie.calculator.somatic.type3': {
+      value: 'Endomorf',
+    },
+    'pages.calorie.calculator.objective.text': {
+      value: 'Objective',
+    },
+    'pages.calorie.calculator.objective.option1': {
+      value: 'Weight loss',
+    },
+    'pages.calorie.calculator.objective.option2': {
+      value: 'Maintaining',
+    },
+    'pages.calorie.calculator.objective.option3': {
+      value: 'Weight gain',
+    },
+    'pages.calorie.calculator.objective.q1': {
+      value:
+        'On a scale of 1 to 10, how fast do you want to achieve this goal?',
+    },
+    'pages.calorie.calculator.objective.q2': {
+      value: 'On a scale of 1 to 10, how active are you on a day to day basis?',
+    },
+    'pages.calorie.calculator.objective.q3': {
+      value: 'Are you doing any type of exercises?',
+    },
+    'pages.calorie.calculator.objective.q4': {
+      value: 'On a scale of 1 to 5, how intense do you train?',
+    },
+    'pages.calorie.calculator.calculate.text': {
+      value: 'Calculate',
     },
     'pages.login.index.submit.text': {
       value: 'Sign in',

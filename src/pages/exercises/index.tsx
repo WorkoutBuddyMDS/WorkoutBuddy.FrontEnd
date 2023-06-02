@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import { Button, Box, Typography, Grid } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 export interface IExerciseItem {
   exerciseId: string;
@@ -15,7 +17,7 @@ export interface IExerciseItem {
 }
 const ExercisesList = () => {
   const router = useRouter();
-  const { locale } = router;
+  const locale = useSelector((state: RootState) => state.language.language);
   const [exercises, setExercises] = useState<IExerciseItem[]>([]);
 
   useEffect(() => {

@@ -8,8 +8,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardMedia,
-  CircularProgress,
   Container,
   Dialog,
   DialogActions,
@@ -17,9 +15,6 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  List,
-  ListItem,
-  Stack,
   Typography,
 } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
@@ -27,6 +22,8 @@ import { BasicLoader } from '@/components/Loader/BasicLoader';
 import BackButton from '@/components/Buttons/BackButton';
 import Link from 'next/link';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 interface IExercise {
   name: string;
@@ -38,10 +35,10 @@ interface IExercise {
 
 function ViewExercise() {
   const [exercise, setExercise] = useState<IExercise>();
-  const [error, setError] = useState();
+  const [_error, setError] = useState();
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
-  const { locale } = router;
+  const locale = useSelector((state: RootState) => state.language.language);
   const { exerciseId } = router.query;
 
   const [open, setOpen] = useState(false);

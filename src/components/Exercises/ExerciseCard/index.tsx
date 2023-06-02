@@ -19,7 +19,7 @@ export const ExerciseCard = ({
   const [triggerRemove, setTriggerRemove] = useState(false);
 
   async function approveHandler() {
-    setTriggerRemove(!triggerRemove)
+    setTriggerRemove(!triggerRemove);
     await axios.post(
       `https://localhost:7132/Exercises/approve`,
       exercise.exerciseId,
@@ -33,7 +33,7 @@ export const ExerciseCard = ({
   }
 
   async function deleteHandler() {
-    setTriggerRemove(!triggerRemove)
+    setTriggerRemove(!triggerRemove);
     await axios.post(
       `https://localhost:7132/Exercises/reject`,
       exercise.exerciseId,
@@ -48,38 +48,40 @@ export const ExerciseCard = ({
 
   return (
     <>
-    {!triggerRemove && <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        component="img"
-        height="140"
-        src={`https://localhost:7132/Image/getImageById?id=${exercise.idImage}`}
-        alt={exercise.name}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {text.nameExercise}: {exercise.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {text.exerciseType}: {exercise.exerciseType}
-        </Typography>
-        <div className="btnGroup">
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={approveHandler}
-          >
-            {text.accept}
-          </Button>
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={deleteHandler}
-          >
-            {text.delete}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>}
+      {!triggerRemove && (
+        <Card sx={{ maxWidth: 345 }}>
+          <CardMedia
+            component="img"
+            height="140"
+            src={`https://localhost:7132/Image/getImageById?id=${exercise.idImage}`}
+            alt={exercise.name}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {text.nameExercise}: {exercise.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {text.exerciseType}: {exercise.exerciseType}
+            </Typography>
+            <div className="btnGroup">
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={approveHandler}
+              >
+                {text.accept}
+              </Button>
+              <Button
+                variant="contained"
+                color="warning"
+                onClick={deleteHandler}
+              >
+                {text.delete}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </>
   );
 };

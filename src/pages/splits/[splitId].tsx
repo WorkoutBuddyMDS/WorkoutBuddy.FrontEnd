@@ -1,15 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ISplit } from '.';
 import AuthHeader from '@/utils/authrorizationHeader';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import {
   Box,
   Button,
-  Grid,
-  Icon,
-  List,
-  ListItem,
   Stack,
   TextareaAutosize,
   Typography,
@@ -17,6 +12,8 @@ import {
 import Comments from '@/components/Comments/Comments';
 import { useRouter } from 'next/router';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 export interface IComment {
   commentId: string;
@@ -43,12 +40,9 @@ interface IViewSplit {
   comments: IComment[];
 }
 
-interface IViewSplit {
-  splitId: string;
-}
-function ViewSplit({ splitId }: IViewSplit) {
+function ViewSplit() {
   const router = useRouter();
-  const { locale } = router;
+  const locale = useSelector((state: RootState) => state.language.language);
   const [split, setSplit] = useState({
     workouts: [] as IWorkout[],
     comments: [] as IComment[],
@@ -139,9 +133,9 @@ function ViewSplit({ splitId }: IViewSplit) {
                   </Typography>
 
                   <Box>
-                    {workout.exercisesList.map((ex) => {
+                    {workout.exercisesList.map((ex, index) => {
                       return (
-                        <Typography>
+                        <Typography key={index}>
                           {/* <Icon as={ArrowRightIcon} color="green.500" /> */}
                           {ex}
                         </Typography>

@@ -7,13 +7,9 @@ export const StyledBackdrop = styled(Backdrop)`
   }
 `;
 
-export const StyledCircularProgress = styled<{ width: string; height: string }>(
-  CircularProgress
-)`
+export const StyledCircularProgress = styled(CircularProgress)`
   && {
     position: absolute;
-    width: ${(props) => props.width} !important;
-    height: ${(props) => props.height} !important;
     color: black;
   }
 `;

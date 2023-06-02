@@ -8,8 +8,9 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import Copyright from '@/components/Copyright/Copyright';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const StyledSection1 = styled(Box)`
   padding: 50px;
@@ -42,7 +43,7 @@ const DetailSection = styled(Box)`
 `;
 
 const Index = () => {
-  const { locale } = useRouter();
+  const locale = useSelector((state: RootState) => state.language.language);
   const [username, setUsername] = useState<string | null>('');
 
   useEffect(() => {

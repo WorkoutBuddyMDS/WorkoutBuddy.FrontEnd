@@ -51,9 +51,10 @@ const InstructionsExercise = (props: { exerciseType?: string }) => {
             </ListItem>
             <ListItem>
               <Typography variant="body1">
-                Breathe. You might be tempted to hold your breath while you're
-                lifting weights. Don't hold your breath. Instead, breathe out as
-                you lift the weight and breathe in as you lower the weight.
+                Breathe. You might be tempted to hold your breath while
+                you&#39re lifting weights. Don&#39t hold your breath. Instead,
+                breathe out as you lift the weight and breathe in as you lower
+                the weight.
               </Typography>
             </ListItem>
             <ListItem>

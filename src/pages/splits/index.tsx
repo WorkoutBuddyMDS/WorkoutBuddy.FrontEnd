@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 export interface ISplit {
   splitId: string;
@@ -19,7 +21,7 @@ export interface ISplit {
 
 const SplitsList = () => {
   const router = useRouter();
-  const { locale } = router;
+  const locale = useSelector((state: RootState) => state.language.language);
   const [splits, setSplits] = useState([] as ISplit[]);
 
   useEffect(() => {

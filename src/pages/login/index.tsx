@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { accountActions } from '@/store/reducers/account';
 import {
@@ -24,6 +24,7 @@ import { NextPage } from 'next';
 import { BasicLoader } from '@/components/Loader/BasicLoader';
 import BasicAlert from '@/components/Alerts/BasicAlert';
 import useText from '@/services/site-properties/parsing';
+import { RootState } from '@/store';
 interface Validator {
   [key: string]: {
     validator: (el: string) => boolean;
@@ -85,7 +86,7 @@ interface Props {
 const Login: NextPage<Props> = () => {
   const dispatcher = useDispatch();
   const router = useRouter();
-  const { locale } = useRouter();
+  const locale = useSelector((state: RootState) => state.language.language);
 
   const [loginModel, setLoginModel] = useState<LoginModel>(
     loginModelInitialState

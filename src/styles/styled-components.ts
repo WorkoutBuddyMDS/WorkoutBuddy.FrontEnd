@@ -22,7 +22,6 @@ export const StyledBasicButton = styled(Button)(
 export const StyledLink = styled(Link)<{ hoverable?: boolean }>(
   ({ theme }) => `
     font-weight: bold;
-    font-family: ${theme.typography?.text1 || ''};
     text-decoration: none;
     color: ${theme.palette.secondary?.main || ''};
     margin: 0 15px;

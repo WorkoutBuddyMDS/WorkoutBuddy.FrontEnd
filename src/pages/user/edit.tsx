@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  TextField,
-  Button,
-  Select,
-  Container,
-  Typography,
-} from '@mui/material';
+import { TextField, Button, Container, Typography } from '@mui/material';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import { DatePicker } from '@mui/x-date-pickers';
 import axios from 'axios';
@@ -13,7 +7,6 @@ import AuthHeader from '@/utils/authrorizationHeader';
 import dayjs from 'dayjs';
 import { BasicLoader } from '@/components/Loader/BasicLoader';
 import BasicAlert from '@/components/Alerts/BasicAlert';
-import { beforeMain } from '@popperjs/core';
 import useText from '@/services/site-properties/parsing';
 import { useRouter } from 'next/router';
 
@@ -59,10 +52,9 @@ const EditUserPage = () => {
     roles: useText('pages.admin.users.table.roles', locale),
     save: useText('general.save.text', locale),
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-    const formData = new FormData();
     try {
       await axios.post(
         'https://localhost:7132/UserAccount/editProfile',
@@ -78,7 +70,7 @@ const EditUserPage = () => {
           },
         }
       );
-    } catch (e) {
+    } catch (e: any) {
       setError(e.message);
     } finally {
       setLoading(false);
