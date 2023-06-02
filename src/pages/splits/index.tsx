@@ -5,19 +5,21 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
+import useText from '@/services/site-properties/parsing';
 
 export interface ISplit {
-    splitId: string,
-    name: string,
-    description: string,
-    workoutsNo: number,
-    workouts: string[],
-    rating: number,
-    creatorName: string
+  splitId: string;
+  name: string;
+  description: string;
+  workoutsNo: number;
+  workouts: string[];
+  rating: number;
+  creatorName: string;
 }
 
 const SplitsList = () => {
   const router = useRouter();
+  const { locale } = router;
   const [splits, setSplits] = useState([] as ISplit[]);
 
   useEffect(() => {
@@ -39,6 +41,11 @@ const SplitsList = () => {
     router.push('/splits/insert-split');
   };
 
+  const text = {
+    title: useText('pages.splits.index.title.text', locale),
+    button: useText('pages.splits.index.button.add.text', locale),
+  };
+
   return (
     <Box
       sx={{
@@ -55,13 +62,10 @@ const SplitsList = () => {
         }}
       >
         <Typography variant="h3" component="h2">
-          Splits:
+          {text.title}
         </Typography>
-        <Button
-          sx={{ backgroundColor: '#d4f0a5' }}
-          onClick={addHandler}
-        >
-          Add new split
+        <Button sx={{ backgroundColor: '#d4f0a5' }} onClick={addHandler}>
+          {text.button}
         </Button>
       </Box>
 

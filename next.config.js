@@ -1,24 +1,20 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
+module.exports = {
+  trailingSlash: true,
   i18n: {
-    localeDetection: false,
-    locales: ['en-US', 'ro-RO'],
+    locales: ['ro-RO', 'en-US'],
     defaultLocale: 'ro-RO',
+    localeDetection: false,
     domains: [
-      {
-        domain: 'www.workoutbuddy.ro:3000',
-        defaultLocale: 'ro-RO',
-        http: true,
-      },
       {
         domain: 'www.workoutbuddy.com:3000',
         defaultLocale: 'en-US',
         http: true,
       },
+      {
+        domain: 'www.workoutbuddy.ro:3000',
+        defaultLocale: 'ro-RO',
+        http: true,
+      },
     ],
   },
-  trailingSlash: false,
 };
-
-module.exports = nextConfig;

@@ -115,7 +115,7 @@ export default function Exercise({
                   }}
                   onClick={(e) => deleteHandler(exercise.exerciseId)}
                 >
-                  {text.edit}
+                  {text.delete}
                 </Button>
               </>
             )}

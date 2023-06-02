@@ -12,6 +12,7 @@ import {
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import useText from '@/services/site-properties/parsing';
 
 interface ISplitCard {
   split: ISplit;
@@ -19,6 +20,7 @@ interface ISplitCard {
 
 export default function SplitCard({ split }: ISplitCard) {
   const router = useRouter();
+  const { locale } = router;
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -50,13 +52,21 @@ export default function SplitCard({ split }: ISplitCard) {
     }
   };
 
+  const text = {
+    rating: useText('components.splitcard.rating.text', locale),
+    workouts: useText('components.splitcard.workouts.text', locale),
+    view: useText('general.view.text', locale),
+    edit: useText('general.edit.text', locale),
+    delete: useText('general.delete.text', locale),
+  };
+
   return (
     <Box
       sx={{
         paddingX: 6,
         display: 'flex',
         justifyContent: 'center',
-        marginBottom: 10
+        marginBottom: 10,
       }}
     >
       <Stack
@@ -93,7 +103,8 @@ export default function SplitCard({ split }: ISplitCard) {
         >
           <Box sx={{ flexDirection: 'row' }}>
             <Typography variant="h5" fontFamily={'body'}>
-              Rating: {split.rating}
+              {text.rating}
+              {split.rating}
               {/* <StarIcon color="yellow" /> */}
             </Typography>
           </Box>
@@ -109,7 +120,7 @@ export default function SplitCard({ split }: ISplitCard) {
             flexDirection={'row'}
             mt={6}
           >
-            <Typography>Workouts: </Typography>
+            <Typography>{text.workouts}</Typography>
             {split.workouts.map((w, index) => {
               return (
                 <Badge
@@ -141,7 +152,7 @@ export default function SplitCard({ split }: ISplitCard) {
               style={{ flex: '1 1 0', fontSize: '10px' }}
               href={`/splits/${split.splitId.toString()}`}
             >
-              View
+              {text.view}
             </Link>
             {isAdmin && (
               <>
@@ -155,10 +166,10 @@ export default function SplitCard({ split }: ISplitCard) {
                   }}
                   onClick={(e) => editHandler(split.splitId)}
                 >
-                  Edit
+                  {text.edit}
                 </Button>
                 <Button
-                sx={{
+                  sx={{
                     fontSize: 16,
                     bgcolor: 'red',
                     color: 'white',
@@ -167,7 +178,7 @@ export default function SplitCard({ split }: ISplitCard) {
                   }}
                   onClick={(e) => deleteHandler(split.splitId)}
                 >
-                  Delete
+                  {text.delete}
                 </Button>
               </>
             )}

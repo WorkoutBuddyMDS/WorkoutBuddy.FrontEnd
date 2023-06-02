@@ -15,6 +15,8 @@ import {
   Typography,
 } from '@mui/material';
 import Comments from '@/components/Comments/Comments';
+import { useRouter } from 'next/router';
+import useText from '@/services/site-properties/parsing';
 
 export interface IComment {
   commentId: string;
@@ -45,15 +47,16 @@ interface IViewSplit {
   splitId: string;
 }
 function ViewSplit({ splitId }: IViewSplit) {
+  const router = useRouter();
+  const { locale } = router;
   const [split, setSplit] = useState({
     workouts: [] as IWorkout[],
     comments: [] as IComment[],
   } as IViewSplit);
   const [commentText, setCommentText] = useState('');
-  const [isNewComment, setIsNewComment] = useState(false);
 
   useEffect(() => {
-    const id = location.href.split('/').pop();
+    const id = router.query.splitId;
 
     const getSplit = async (id: string | undefined) => {
       const { data } = await axios.get(
@@ -67,10 +70,24 @@ function ViewSplit({ splitId }: IViewSplit) {
       setSplit(data);
     };
 
-    getSplit(id);
-  }, [isNewComment]);
+    if (id && typeof id === 'string') {
+      getSplit(id);
+    }
+  }, [router]);
 
-  const addHandler = async (text: string, parentCommentId: string | null = null) => {
+  const text = {
+    creatorText: useText('pages.splits.split-id.creator.text', locale),
+    descriptionText: useText('pages.splits.split-id.description.text', locale),
+    comments: useText('pages.splits.split-id.comments.text', locale),
+    question: useText('pages.splits.split-id.question.text'),
+    addComment: useText('pages.splits.split-id.comment.add.text'),
+    placeholder: useText('pages.splits.split-id.textarea.placeholder.text'),
+  };
+
+  const addHandler = async (
+    text: string,
+    parentCommentId: string | null = null
+  ) => {
     let newComment = {
       commentText: text,
       parentCommentId,
@@ -81,27 +98,32 @@ function ViewSplit({ splitId }: IViewSplit) {
       headers: {
         'Content-Type': 'application/json',
         Authorization: AuthHeader(),
-      }},
-    );
-    setIsNewComment((state) => !state);
+      },
+    });
     setCommentText('');
   };
   return (
     <Box>
-      <Stack border="dashed" spacing={{ base: 6, md: 10 }}  width="50%" margin="auto" my="2rem">
-        <Box sx={{bgcolor: "#d4f0a5", width: "100%", py: "2rem"}}>
+      <Stack
+        border="dashed"
+        spacing={{ base: 6, md: 10 }}
+        width="50%"
+        margin="auto"
+        my="2rem"
+      >
+        <Box sx={{ bgcolor: '#d4f0a5', width: '100%', py: '2rem' }}>
           <Typography variant="h2" textAlign="center">
             {split.name}
           </Typography>
           <Typography variant="h5" color={'gray.500'} textAlign="center">
-            Creator: @{split.creatorName}
+            {text.creatorText} @{split.creatorName}
           </Typography>
         </Box>
 
         <Stack spacing={{ base: 4, sm: 6 }} direction={'column'}>
           <Stack flexDirection="column" spacing={{ base: 4, sm: 6 }}>
             <Typography fontSize={'2xl'} fontWeight={'300'}>
-              Description: {split.description}
+              {text.descriptionText} {split.description}
             </Typography>
           </Stack>
           {split.workouts.map((workout, index) => {
@@ -120,8 +142,8 @@ function ViewSplit({ splitId }: IViewSplit) {
                     {workout.exercisesList.map((ex) => {
                       return (
                         <Typography>
-                            {/* <Icon as={ArrowRightIcon} color="green.500" /> */}
-                            {ex}
+                          {/* <Icon as={ArrowRightIcon} color="green.500" /> */}
+                          {ex}
                         </Typography>
                       );
                     })}
@@ -132,30 +154,25 @@ function ViewSplit({ splitId }: IViewSplit) {
           })}
         </Stack>
         <Stack>
-      <Typography variant="h5">Comments:</Typography>
-      <Stack
-        p={6}
-        m="auto"
-      >
-        <Typography variant="h6">Do you have any question?</Typography>
-        <Stack direction="row">
-          <TextareaAutosize 
-            placeholder="say something nice"
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-          />
-          <Box alignItems="center" justifyContent="center">
-            <Button
-              onClick={() => addHandler(commentText)}
-            >
-              Add comment
-            </Button>
-          </Box>
-        </Stack>
-      </Stack>
+          <Typography variant="h5">{text.comments}</Typography>
+          <Stack p={6} m="auto">
+            <Typography variant="h6">{text.question}</Typography>
+            <Stack direction="row">
+              <TextareaAutosize
+                placeholder={text.placeholder}
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+              />
+              <Box alignItems="center" justifyContent="center">
+                <Button onClick={() => addHandler(commentText)}>
+                  {text.addComment}
+                </Button>
+              </Box>
+            </Stack>
+          </Stack>
 
-      <Comments comments={split.comments} addHandler={addHandler}/>
-    </Stack>
+          <Comments comments={split.comments} addHandler={addHandler} />
+        </Stack>
       </Stack>
     </Box>
   );
@@ -166,24 +183,3 @@ ViewSplit.getLayout = function getLayout(page: React.ReactElement) {
 };
 
 export default ViewSplit;
-
-// export async function getStaticPaths() {
-//   const { data } = await axios.get(`https://localhost:7132/Split/getSplits`);
-//   console.log(data);
-
-//   const paths = data.map((split: ISplit) => ({
-//     params: { id: split.splitId },
-//   }));
-//   return {
-//     paths,
-//     fallback: false, // can also be true or 'blocking'
-//   };
-// }
-
-// export async function getStaticProps(context) {
-//   return {
-//     props: {
-//       splitId: context.params.id,
-//     },
-//   };
-// }

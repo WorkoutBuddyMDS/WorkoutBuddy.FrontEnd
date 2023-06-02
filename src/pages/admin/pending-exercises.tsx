@@ -16,7 +16,7 @@ function PendingExercises() {
   const { locale } = useRouter();
   const text = {
     noExericse: useText('pages.admin.pending-exercises.no-exercises', locale),
-    error: useText("'pages.admin.pending-exercises.error'", locale),
+    error: useText('pages.admin.pending-exercises.error', locale),
     accept: useText('general.accept.text', locale),
     delete: useText('general.delete.text', locale),
     exerciseType: useText(
