@@ -24,6 +24,12 @@ import { RootState } from '../../store';
 import LanguageSwitch from '../../components/LanguageSwitch/LanguageSwitch';
 import useText from '../../services/site-properties/parsing';
 
+const pages = [
+  <StyledLink href="/exercises">Exercises</StyledLink>,
+  <StyledLink href="/splits">Splits</StyledLink>,
+  <StyledLink href="/caloriesCalculator">Calories Calculator</StyledLink>,
+];
+
 const StyledButtonBox = styled(Box)`
   margin-left: 10px;
 `;
