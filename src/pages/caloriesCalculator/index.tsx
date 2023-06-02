@@ -35,6 +35,7 @@ const CaloriesCalculator = () => {
   const [activity, setActivity] = useState<number | undefined>();
   const [isTraining, setIsTraining] = useState<boolean>();
   const [training, setTraining] = useState<number |undefined>()
+  const [calories, setCalories] = useState("")
 
   useEffect(() => {
     const getWeight = async () => {
@@ -51,6 +52,17 @@ const CaloriesCalculator = () => {
     getWeight();
   }, []);
 
+  const calculateResult = () => {
+    let calories = weight * 24;
+    calories = gender == '0' ? calories : calories * 0.9
+    calories = parseInt(age) > 30 ? calories * (100 - Math.round((parseInt(age) - 30)/10) * 10) / 100 : calories
+    calories = somaticType == "0" ? calories * 0.95 : somaticType == "2" ? calories * 1.05 : calories
+    calories = objective.type == "0" ? calories * (90 - objective.rate) / 100 : objective.type == "2" ? calories * (110 + objective.rate) / 100 : calories
+    calories = calories * (110 + 2 * activity) / 100
+    calories = isTraining ? (calories + (training + 3) * weight) : calories 
+    setCalories(calories.toString())
+  }
+
   return (
     <Container sx={{ display: 'flex', p: 7, flexDirection: 'column' }}>
       <Stack alignItems="center">
@@ -59,6 +71,9 @@ const CaloriesCalculator = () => {
           Input your goal and your details and this calculator will tell you how
           many calories you should eat per day to achieve your goal as fast as
           possible
+        </Typography>
+        <Typography variant="overline" fontSize={18} textAlign="center" width="50%">
+          Your calories intake should be: {calories}
         </Typography>
       </Stack>
       <Stack pt={6} flexDirection="column" spacing={3}>
@@ -168,7 +183,7 @@ const CaloriesCalculator = () => {
           </FormControl>
         )}
       </Stack>
-      <Button variant="outlined">
+      <Button variant="outlined" onClick={() => calculateResult()}>
         Calculate
       </Button>
     </Container>
