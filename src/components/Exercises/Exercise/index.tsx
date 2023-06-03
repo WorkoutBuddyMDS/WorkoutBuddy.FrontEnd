@@ -13,7 +13,7 @@ export default function Exercise({
 }: {
   exercise: IExerciseItem;
   deleteExercises: (exerciseId: string) => void;
-  text: { [key: string]: string };
+  text: { [_key: string]: string };
 }) {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -43,7 +43,9 @@ export default function Exercise({
           }
         );
         deleteExercises(exerciseId);
-      } catch (err) {}
+      } catch (err) {
+        console.log('Eroare');
+      }
     }
   };
 
@@ -100,7 +102,7 @@ export default function Exercise({
                     boxShadow:
                       '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)',
                   }}
-                  onClick={(e) => editHandler(exercise.exerciseId)}
+                  onClick={() => editHandler(exercise.exerciseId)}
                 >
                   {text.edit}
                 </Button>
@@ -113,7 +115,7 @@ export default function Exercise({
                     boxShadow:
                       '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)',
                   }}
-                  onClick={(e) => deleteHandler(exercise.exerciseId)}
+                  onClick={() => deleteHandler(exercise.exerciseId)}
                 >
                   {text.delete}
                 </Button>

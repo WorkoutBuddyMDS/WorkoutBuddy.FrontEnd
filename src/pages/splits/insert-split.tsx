@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Select from 'react-select';
 import AuthHeader from '@/utils/authrorizationHeader';
 import { useRouter } from 'next/router';
 import {
@@ -17,6 +16,9 @@ import {
 } from '@mui/material';
 import Workout from '@/components/Workouts/Workout';
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import useText from '@/services/site-properties/parsing';
 
 interface ISelectItem {
   value: string;
@@ -62,6 +64,16 @@ const workoutInitialState: IWorkoutModel = {
 function InsertSplit() {
   const router = useRouter();
   const [split, setSplit] = useState(splitInitialState);
+  const locale = useSelector((state: RootState) => state.language.language);
+
+  const text = {
+    title: useText('pages.splits.insert.title.text', locale),
+    name: useText('pages.splits.insert.name.text', locale),
+    description: useText('pages.splits.insert.description.text', locale),
+    addWorkout: useText('pages.splits.insert.button.add-workout', locale),
+    private: useText('pages.splits.insert.private.text', locale),
+    submit: useText('general.submit.text', locale),
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -100,8 +112,7 @@ function InsertSplit() {
     formData.append('splitId', split.splitId);
     formData.append('name', split.name);
     formData.append('description', split.description);
-    formData.append('isPrivate', split.isPrivate ?? false);
-    debugger;
+    formData.append('isPrivate', (split.isPrivate || false).toString());
     let index = 0;
     for (let w of split.workouts) {
       querryString += `&[${index}].id=${w.id}`;
@@ -139,19 +150,19 @@ function InsertSplit() {
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',
-        alignItems: "center"
+        alignItems: 'center',
       }}
     >
-      <Stack spacing={4} p={6} width= "50%" border="dashed">
+      <Stack spacing={4} p={6} width="50%" border="dashed">
         <Typography
           variant="h2"
           lineHeight={1.1}
           fontSize={{ base: '2xl', sm: '3xl' }}
         >
-          Insert Split
+          {text.title}
         </Typography>
         <FormControl>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>{text.name}</FormLabel>
           <Input
             value={split.name}
             onChange={(e) => setSplit({ ...split, name: e.target.value })}
@@ -160,7 +171,7 @@ function InsertSplit() {
           />
         </FormControl>
         <FormControl>
-          <FormLabel>Description</FormLabel>
+          <FormLabel>{text.description}</FormLabel>
           <TextareaAutosize
             value={split.description}
             onChange={(e) =>
@@ -186,21 +197,29 @@ function InsertSplit() {
 
         <FormControl>
           <Box justifyContent="center">
-            <Button onClick={newWorkoutHandler}>Add new workout</Button>
+            <Button onClick={newWorkoutHandler}>{text.addWorkout}</Button>
           </Box>
         </FormControl>
         <FormControl>
-        <FormControlLabel control={<Checkbox  checked={split.isPrivate}
-            value={split.isPrivate}
-            onChange={(e) => {
-              setSplit({
-                ...split,
-                isPrivate: e.target.value == 'false' ? true : false,
-              });
-            }}/>} label="Is private?" labelPlacement="start" />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={split.isPrivate}
+                value={split.isPrivate}
+                onChange={(e) => {
+                  setSplit({
+                    ...split,
+                    isPrivate: e.target.value === 'false' ? true : false,
+                  });
+                }}
+              />
+            }
+            label={text.private}
+            labelPlacement="start"
+          />
         </FormControl>
         <Stack spacing={6} direction={['column', 'row']}>
-          <Button onClick={submitHandler}>Submit</Button>
+          <Button onClick={submitHandler}>{text.submit}</Button>
         </Stack>
       </Stack>
     </Box>

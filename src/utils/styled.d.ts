@@ -22,8 +22,8 @@ declare module '@mui/material/styles' {
       heading?: React.CSSProperties['fontFamily'];
       subtitle?: React.CSSProperties['fontFamily'];
     };
-    text1?: React.CSSProperties['fontFamily'];
-    text2?: React.CSSProperties['fontFamily'];
+    text1: React.CSSProperties['fontFamily'];
+    text2: React.CSSProperties['fontFamily'];
   }
 
   interface Palette {

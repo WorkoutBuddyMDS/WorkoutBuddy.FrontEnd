@@ -7,25 +7,27 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Fab from '@mui/material/Fab';
-import { useRouter } from 'next/router';
 import RoFlagIcon from '../..//components/Icons/ROFlagIcon';
 import UkFlagIcon from '../../components/Icons/UKFlagIcon';
 import useText from '../../services/site-properties/parsing';
+import { useDispatch, useSelector } from 'react-redux';
+import { languageActions } from '@/store/reducers/language';
+import { RootState } from '@/store';
 
 export default function LanguageSwitch() {
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const lang = useSelector((state: RootState) => state.language.language);
 
+  console.log(lang);
   const [open, setOpen] = useState(false);
-  const [language, setLanguage] = useState(
-    router.locale === 'ro-RO' ? 'ro' : 'uk'
-  );
+  const [language, setLanguage] = useState(lang === 'ro-RO' ? 'ro' : 'uk');
 
   const text = {
-    romanian: useText('language.romanian.text', router.locale),
-    english: useText('language.english.text', router.locale),
-    titleModal: useText('language.switch.title.text', router.locale),
-    cancelText: useText('general.modal.text.cancel', router.locale),
-    save: useText('general.save.text', router.locale),
+    romanian: useText('language.romanian.text', lang),
+    english: useText('language.english.text', lang),
+    titleModal: useText('language.switch.title.text', lang),
+    cancelText: useText('general.modal.text.cancel', lang),
+    save: useText('general.save.text', lang),
   };
 
   const handleChange = (event: any) => {
@@ -33,17 +35,15 @@ export default function LanguageSwitch() {
   };
 
   const handleSave = () => {
-    location.replace(
-      language === 'uk'
-        ? 'http://www.workoutbuddy.com:3000'
-        : 'http://www.workoutbuddy.ro:3000'
-    );
+    language === 'uk'
+      ? dispatch(languageActions.switchLanguage('en-US'))
+      : dispatch(languageActions.switchLanguage('ro-RO'));
 
     setOpen(false);
   };
 
   return (
-    <>
+    <span>
       <Fab
         sx={{
           position: 'fixed',
@@ -59,7 +59,7 @@ export default function LanguageSwitch() {
         }}
         onClick={() => setOpen(true)}
       >
-        {router.locale === 'ro-RO' ? <RoFlagIcon /> : <UkFlagIcon />}
+        {lang === 'ro-RO' ? <RoFlagIcon /> : <UkFlagIcon />}
       </Fab>
       <Dialog
         open={open}
@@ -95,6 +95,6 @@ export default function LanguageSwitch() {
           <Button onClick={handleSave}>{text.save}</Button>
         </DialogActions>
       </Dialog>
-    </>
+    </span>
   );
 }

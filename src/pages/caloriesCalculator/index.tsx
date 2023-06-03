@@ -1,8 +1,7 @@
 import NavigationLayout from '@/components/Layouts/NavigationLayout';
 import AuthHeader from '@/utils/authrorizationHeader';
-import { ArrowDropDown, Label } from '@mui/icons-material';
 import {
-    Button,
+  Button,
   Checkbox,
   Container,
   FormControl,
@@ -17,6 +16,9 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import useText from '@/services/site-properties/parsing';
 
 interface IObjective {
   type: string;
@@ -34,14 +36,15 @@ const CaloriesCalculator = () => {
   });
   const [activity, setActivity] = useState<number | undefined>();
   const [isTraining, setIsTraining] = useState<boolean>();
-  const [training, setTraining] = useState<number |undefined>()
-  const [calories, setCalories] = useState("")
+  const [training, setTraining] = useState<number | undefined>();
+  const [calories, setCalories] = useState('');
+  const lang = useSelector((state: RootState) => state.language.language);
 
   useEffect(() => {
     const getWeight = async () => {
       const { data } = await axios({
         method: 'get',
-        url: "https://localhost:7132/UserAccount/getCurrentWeight",
+        url: 'https://localhost:7132/UserAccount/getCurrentWeight',
         headers: {
           Authorization: AuthHeader(),
         },
@@ -54,72 +57,115 @@ const CaloriesCalculator = () => {
 
   const calculateResult = () => {
     let calories = weight * 24;
-    calories = gender == '0' ? calories : calories * 0.9
-    calories = parseInt(age) > 30 ? calories * (100 - Math.round((parseInt(age) - 30)/10) * 10) / 100 : calories
-    calories = somaticType == "0" ? calories * 0.95 : somaticType == "2" ? calories * 1.05 : calories
-    calories = objective.type == "0" ? calories * (90 - objective.rate) / 100 : objective.type == "2" ? calories * (110 + objective.rate) / 100 : calories
-    calories = calories * (110 + 2 * activity) / 100
-    calories = isTraining ? (calories + (training + 3) * weight) : calories 
-    setCalories(calories.toString())
-  }
+    calories = gender == '0' ? calories : calories * 0.9;
+    calories =
+      parseInt(age || '0') > 30
+        ? (calories *
+            (100 - Math.round((parseInt(age || '0') - 30) / 10) * 10)) /
+          100
+        : calories;
+    calories =
+      somaticType == '0'
+        ? calories * 0.95
+        : somaticType == '2'
+        ? calories * 1.05
+        : calories;
+    calories =
+      objective.type == '0'
+        ? (calories * (90 - objective.rate)) / 100
+        : objective.type == '2'
+        ? (calories * (110 + objective.rate)) / 100
+        : calories;
+    calories = (calories * (110 + 2 * (activity || 0))) / 100;
+    calories = isTraining
+      ? calories + ((training || 0) + 3) * weight
+      : calories;
+    setCalories(calories.toString());
+  };
 
+  const text = {
+    header: useText('pages.calorie-calculator.title.header', lang),
+    text: useText('pages.calorie-calculator.title.text', lang),
+    recommendation: useText(
+      'pages.calorie-calculator.recommendation.text',
+      lang
+    ),
+    gender: useText('pages.calorie.calculator.gender.text', lang),
+    male: useText('pages.calorie.calculator.gender.male', lang),
+    female: useText('pages.calorie.calculator.gender.female', lang),
+    age: useText('pages.calorie.calculator.age.text', lang),
+    somaticType: useText('pages.calorie.calculator.somatic.text', lang),
+    somatic1: useText('pages.calorie.calculator.somatic.type1', lang),
+    somatic2: useText('pages.calorie.calculator.somatic.type2', lang),
+    somatic3: useText('pages.calorie.calculator.somatic.type3', lang),
+    objective: useText('pages.calorie.calculator.objective.text', lang),
+    loss: useText('pages.calorie.calculator.objective.option1', lang),
+    maintain: useText('pages.calorie.calculator.objective.option2', lang),
+    gain: useText('pages.calorie.calculator.objective.option3', lang),
+    q1: useText('pages.calorie.calculator.objective.q1', lang),
+    q2: useText('pages.calorie.calculator.objective.q2', lang),
+    q3: useText('pages.calorie.calculator.objective.q3', lang),
+    q4: useText('pages.calorie.calculator.objective.q4', lang),
+    calculate: useText('pages.calorie.calculator.calculate.text', lang),
+  };
   return (
     <Container sx={{ display: 'flex', p: 7, flexDirection: 'column' }}>
       <Stack alignItems="center">
-        <Typography variant="h2">Calories calculator</Typography>
+        <Typography variant="h2">{text.header}</Typography>
         <Typography variant="subtitle1" textAlign="center" width="50%">
-          Input your goal and your details and this calculator will tell you how
-          many calories you should eat per day to achieve your goal as fast as
-          possible
+          {text.text}
         </Typography>
-        <Typography variant="overline" fontSize={18} textAlign="center" width="50%">
-          Your calories intake should be: {calories}
+        <Typography
+          variant="overline"
+          fontSize={18}
+          textAlign="center"
+          width="50%"
+        >
+          {text.recommendation} {calories}
         </Typography>
       </Stack>
       <Stack pt={6} flexDirection="column" spacing={3}>
         <FormControl>
-          <FormLabel>Gender</FormLabel>
+          <FormLabel>{text.gender}</FormLabel>
           <Select value={gender} onChange={(e) => setGender(e.target.value)}>
-            <MenuItem value="0">Man</MenuItem>
-            <MenuItem value="1">Woman</MenuItem>
+            <MenuItem value="0">{text.male}</MenuItem>
+            <MenuItem value="1">{text.female}</MenuItem>
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel>Age</FormLabel>
+          <FormLabel>{text.age}</FormLabel>
           <TextField
             value={age}
             onChange={(e) => setAge(e.target.value)}
           ></TextField>
         </FormControl>
         <FormControl>
-          <FormLabel>Somatic type</FormLabel>
+          <FormLabel>{text.somaticType}</FormLabel>
           <Select
             value={somaticType}
             onChange={(e) => setSomaticType(e.target.value)}
           >
-            <MenuItem value="0">Ectomorf</MenuItem>
-            <MenuItem value="1">Mezomorf</MenuItem>
-            <MenuItem value="2">Endomorf</MenuItem>
+            <MenuItem value="0">{text.somatic1}</MenuItem>
+            <MenuItem value="1">{text.somatic2}</MenuItem>
+            <MenuItem value="2">{text.somatic3}</MenuItem>
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel>Objective</FormLabel>
+          <FormLabel>{text.objective}</FormLabel>
           <Select
             value={objective.type}
             onChange={(e) =>
               setObjective({ ...objective, type: e.target.value })
             }
           >
-            <MenuItem value="0">Weight loss</MenuItem>
-            <MenuItem value="1">Mentaining</MenuItem>
-            <MenuItem value="2">Weight gain</MenuItem>
+            <MenuItem value="0">{text.loss}</MenuItem>
+            <MenuItem value="1">{text.maintain}</MenuItem>
+            <MenuItem value="2">{text.gain}</MenuItem>
           </Select>
         </FormControl>
         {objective.type != '1' && (
           <FormControl>
-            <FormLabel>
-              On a scale of 1 to 10, how fast do you want to achieve this goal?
-            </FormLabel>
+            <FormLabel>{text.q1}</FormLabel>
             <Slider
               defaultValue={0}
               valueLabelDisplay="auto"
@@ -128,16 +174,14 @@ const CaloriesCalculator = () => {
               min={0}
               max={10}
               value={objective.rate}
-              onChange={(e) =>
+              onChange={(e: any) =>
                 setObjective({ ...objective, rate: e.target?.value })
               }
             />
           </FormControl>
         )}
         <FormControl>
-          <FormLabel>
-            On a scale of 1 to 10, how active are you on a day to day basis?
-          </FormLabel>
+          <FormLabel>{text.q2}</FormLabel>
           <Slider
             defaultValue={0}
             valueLabelDisplay="auto"
@@ -146,7 +190,7 @@ const CaloriesCalculator = () => {
             min={0}
             max={10}
             value={activity}
-            onChange={(e) => setActivity(e.target.value)}
+            onChange={(e: any) => setActivity(e.target.value)}
           />
         </FormControl>
         <FormControl>
@@ -156,20 +200,18 @@ const CaloriesCalculator = () => {
               <Checkbox
                 checked={isTraining}
                 value={isTraining}
-                onChange={(e) => {
+                onChange={() => {
                   setIsTraining(!isTraining);
                 }}
               />
             }
-            label="Are you doing any type of exercises?"
+            label={text.q3}
             labelPlacement="start"
           />
         </FormControl>
         {isTraining && (
           <FormControl>
-            <FormLabel>
-              On a scale of 1 to 5, how intense do you train?
-            </FormLabel>
+            <FormLabel>{text.q4}</FormLabel>
             <Slider
               defaultValue={0}
               valueLabelDisplay="auto"
@@ -178,13 +220,13 @@ const CaloriesCalculator = () => {
               min={0}
               max={5}
               value={training}
-              onChange={(e) => setTraining(e.target.value)}
+              onChange={(e: any) => setTraining(e.target.value)}
             />
           </FormControl>
         )}
       </Stack>
       <Button variant="outlined" onClick={() => calculateResult()}>
-        Calculate
+        {text.calculate}
       </Button>
     </Container>
   );

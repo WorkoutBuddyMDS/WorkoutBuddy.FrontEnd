@@ -9,15 +9,14 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { AccountBox, FitnessCenter, Groups } from '@mui/icons-material';
-import { useRouter } from 'next/router';
+import { FitnessCenter, Groups } from '@mui/icons-material';
 import useText from '@/services/site-properties/parsing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const drawerWidth: number = 240;
 
@@ -72,7 +71,7 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function AdminNavigationLayout({ children }: { children: React.ReactElement }) {
-  const { locale } = useRouter();
+  const locale = useSelector((state: RootState) => state.language.language);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);

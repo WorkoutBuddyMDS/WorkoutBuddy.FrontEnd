@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { StyledLink } from '@/styles/styled-components';
-
+import React from 'react';
 const Copyright = (props: any) => {
   return (
     <Typography
