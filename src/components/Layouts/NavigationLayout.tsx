@@ -167,11 +167,13 @@ const NavigationLayout = React.forwardRef((props: any) => {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                {pages.map((page, index) => (
-                  <Typography textAlign="center" key={index}>
-                    {page}
-                  </Typography>
-                ))}
+                {typeof window !== 'undefined' &&
+                  sessionStorage.getItem('token') &&
+                  pages.map((page, index) => (
+                    <Typography textAlign="center" key={index}>
+                      {page}
+                    </Typography>
+                  ))}
               </Menu>
             </Box>
             <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -194,14 +196,16 @@ const NavigationLayout = React.forwardRef((props: any) => {
               Workout Buddy
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map((page, index) => (
-                <Typography
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                  key={index}
-                >
-                  {page}
-                </Typography>
-              ))}
+              {typeof window !== 'undefined' &&
+                sessionStorage.getItem('token') &&
+                pages.map((page, index) => (
+                  <Typography
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    key={index}
+                  >
+                    {page}
+                  </Typography>
+                ))}
             </Box>
 
             <LanguageSwitch />
