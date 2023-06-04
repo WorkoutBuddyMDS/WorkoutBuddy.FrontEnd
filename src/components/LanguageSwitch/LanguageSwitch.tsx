@@ -11,8 +11,8 @@ import RoFlagIcon from '../..//components/Icons/ROFlagIcon';
 import UkFlagIcon from '../../components/Icons/UKFlagIcon';
 import useText from '../../services/site-properties/parsing';
 import { useDispatch, useSelector } from 'react-redux';
-import { languageActions } from '@/store/reducers/language';
-import { RootState } from '@/store';
+import { languageActions } from '../../store/reducers/language';
+import { RootState } from '../../store';
 
 export default function LanguageSwitch() {
   const dispatch = useDispatch();
