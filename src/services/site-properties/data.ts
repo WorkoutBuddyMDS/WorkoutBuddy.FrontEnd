@@ -8,6 +8,9 @@ type Text = {
 
 export const text: Text = {
   'ro-RO': {
+    'home': {
+      value: "ACASA"
+    },
     'pages.admin.pending-exercises.no-exercises': {
       value: 'Nu există exerciții de aprobat!',
     },
@@ -401,6 +404,9 @@ export const text: Text = {
     'pages.exercises.exercise.modal.content': {
       value: 'Are you sure you want to delete this exercise?',
     },
+    'home': {
+      value: "HOME"
+    },
     'general.modal.text.cancel': {
       value: 'Cancel',
     },
@@ -501,7 +507,7 @@ export const text: Text = {
       value:
         'Input your goal and your details and this calculator will tell you how many calories you should eat per day to achieve your goal as fast as possible',
     },
-    'pages.calorie-calculator.recomandation.text': {
+    'pages.calorie-calculator.recommendation.text': {
       value: 'Your calories intake should be:',
     },
     'pages.calorie.calculator.gender.text': {
@@ -599,7 +605,7 @@ export const text: Text = {
       value: 'Save',
     },
     'pages.home.index.title.text': {
-      value: 'Workout your buddy',
+      value: 'Workout your body',
     },
     'pages.home.index.subtitle.text': {
       value:

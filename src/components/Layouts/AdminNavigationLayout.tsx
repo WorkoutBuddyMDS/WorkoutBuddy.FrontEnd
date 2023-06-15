@@ -82,7 +82,7 @@ function AdminNavigationLayout({ children }: { children: React.ReactElement }) {
       'navigation-admin.pending-exercises.text',
       locale
     ),
-    users: useText('navigation-admin.users.text', locale),
+    home: useText('home', locale),
   };
 
   const mainListItems = (
@@ -96,11 +96,11 @@ function AdminNavigationLayout({ children }: { children: React.ReactElement }) {
         </Link>
       </ListItemButton>
       <ListItemButton>
-        <Link href={'/admin/users'}>
+        <Link href={'/'}>
           <ListItemIcon>
             <Groups />
           </ListItemIcon>
-          {open && <ListItemText primary={text.users} />}
+          {open && <ListItemText primary={text.home} />}
         </Link>
       </ListItemButton>
     </React.Fragment>

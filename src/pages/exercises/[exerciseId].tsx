@@ -157,23 +157,7 @@ function ViewExercise() {
             </Box>
           )}
         </Card>
-        <Link href={`/exercises/insert?id=${exerciseId}`}>
-          <Button variant="outlined">{text.edit}</Button>
-        </Link>
-        <Button variant="contained" color="error" onClick={handleOpen}>
-          {text.delete}
-        </Button>
       </Container>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{text.modalTitle}</DialogTitle>
-        <DialogContent>{text.modalContent}</DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>{text.cancel}</Button>
-          <Button onClick={handleDelete} autoFocus>
-            {text.delete}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 }
